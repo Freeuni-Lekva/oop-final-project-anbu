@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS quizDB;
+USE quizDB;
+
 -- Drop tables if they exist to avoid errors during re-creation
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS friends;
