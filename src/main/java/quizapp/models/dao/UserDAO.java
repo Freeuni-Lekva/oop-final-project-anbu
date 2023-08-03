@@ -33,7 +33,6 @@ public class UserDAO implements DAO<User> {
 
                 user.setId(id);
                 user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
                 user.setRegistrationDate(rs.getDate("registration_date"));
                 user.setPasswordHash(rs.getString("password_hash"));
 
@@ -62,7 +61,6 @@ public class UserDAO implements DAO<User> {
 
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
                 user.setRegistrationDate(rs.getDate("registration_date"));
                 user.setPasswordHash(rs.getString("password_hash"));
 
@@ -78,15 +76,13 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public boolean save(User user) {
-        String query = "insert into users(username, password_hash, email, registration_date) values (?,?,?,?)";
+        String query = "insert into users(username, password_hash) values (?,?)";
 
         try (Connection conn = _source.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);) {
 
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPasswordHash());
-            ps.setString(3, user.getEmail());
-            ps.setDate(4, new Date(user.getRegistrationDate().getTime()));
 
             ps.execute();
 
@@ -101,7 +97,7 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public boolean update(User user) {
-        String query = "update users set username = ?, password_hash = ?, email = ?, registration_date = ? where user_id = ?";
+        String query = "update users set username = ?, password_hash = ? where user_id = ?";
 
 //        StringBuilder sb = new StringBuilder("update users set");
 //        sb.append(" %s = ?,".repeat(params.length));
@@ -113,10 +109,8 @@ public class UserDAO implements DAO<User> {
 
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPasswordHash());
-            ps.setString(3, user.getEmail());
-            ps.setDate(4, new Date(user.getRegistrationDate().getTime()));
 
-            ps.setInt(5, user.getId());
+            ps.setInt(3, user.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -146,6 +140,34 @@ public class UserDAO implements DAO<User> {
         return true;
     }
 
+    public Optional<User> getByUsername(String username) {
+        String query = "select * from users where username = ?";
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+
+                user.id = rs.getInt("user_ud");
+                user.username = rs.getString("username");
+                user.passwordHash = rs.getString("password_hash");
+                user.registrationDate = rs.getDate("registration_date");
+
+                return Optional.of(user);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.empty();
+    }
+
     public Optional<User> checkUser(String username) {
         String query = "select * from users where username = ?";
 
@@ -162,7 +184,6 @@ public class UserDAO implements DAO<User> {
                 user.setId(rs.getInt("user_id"));
                 user.setUsername(rs.getString("username"));
                 user.setPasswordHash(rs.getString("password_hash"));
-                user.setEmail(rs.getString("email"));
                 user.setRegistrationDate(rs.getDate("registration_date"));
 
                 return Optional.of(user);
