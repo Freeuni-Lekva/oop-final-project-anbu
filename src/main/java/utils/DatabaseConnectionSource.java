@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 
 public class DatabaseConnectionSource {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/_____";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/";
+    private static final String DB_NAME = "quizDB";
     private static final String DB_USER = "root";
     private static final String DB_PASS = "Testpass1!";
 
@@ -19,12 +20,16 @@ public class DatabaseConnectionSource {
             Class.forName("com.mysql.cj.jdbc.Driver");
 //            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 
-            try (Connection conn = getConnection();
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
                  Statement statement = conn.createStatement()) {
                 String query = getSql("tables.sql");
                 String[] queries = query.split(";");
 
-                for (String qvevri : queries) statement.execute(qvevri);
+                System.out.println(query);
+
+                for (String qvevri : queries) {
+                    statement.execute(qvevri);
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -45,7 +50,7 @@ public class DatabaseConnectionSource {
 
     // Public method to get a database connection
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+        return DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASS);
     }
 
     // retrieves sql statements as list from resource (filename)
