@@ -6,7 +6,6 @@ public class User {
     public int id;
     public String username;
     public String passwordHash;
-    public String email;
     public Date registrationDate;
 
     public int getId() {
@@ -33,14 +32,6 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Date getRegistrationDate() {
         return registrationDate;
     }
@@ -55,7 +46,6 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
-                ", email='" + email + '\'' +
                 ", registrationDate=" + registrationDate +
                 '}';
     }
