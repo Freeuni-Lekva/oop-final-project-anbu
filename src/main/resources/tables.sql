@@ -53,7 +53,7 @@ CREATE TABLE quiz_history (
   user_id INT NOT NULL,
   quiz_id INT NOT NULL,
   score INT,
-  completion_time INT, -- Time taken to complete the quiz in seconds
+  completion_time INT,
   completion_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)

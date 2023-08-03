@@ -6,15 +6,15 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DatabaseConnection {
+public class DatabaseConnectionSource {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/_____";
-    private static final String DB_USER = "";
-    private static final String DB_PASS = "";
+    private static final String DB_USER = "root";
+    private static final String DB_PASS = "Testpass1!";
 
-    private static DatabaseConnection instance;
+    private static DatabaseConnectionSource instance;
 
-    private DatabaseConnection() {
+    private DatabaseConnectionSource() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 //            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -36,9 +36,9 @@ public class DatabaseConnection {
 //        }
     }
 
-    public static DatabaseConnection getInstance() {
+    public static DatabaseConnectionSource getInstance() {
         if (instance == null) {
-            instance = new DatabaseConnection();
+            instance = new DatabaseConnectionSource();
         }
         return instance;
     }
@@ -52,7 +52,7 @@ public class DatabaseConnection {
     private static String getSql(final String resource) {
         return new BufferedReader(
                 new InputStreamReader((Objects.requireNonNull(
-                        DatabaseConnection.class.getClassLoader().getResourceAsStream(resource)
+                        DatabaseConnectionSource.class.getClassLoader().getResourceAsStream(resource)
                 )))
         )
                 .lines()
