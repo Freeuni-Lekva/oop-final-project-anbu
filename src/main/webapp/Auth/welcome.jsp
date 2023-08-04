@@ -11,6 +11,8 @@
     <title>Welcome authenticated user</title>
 </head>
 <body>
-
+    <form action="/auth/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>
