@@ -1,11 +1,14 @@
 package quizapp;
 
+import quizapp.models.dao.AnswerDAO;
+import quizapp.models.questions.Answer;
 import utils.MyLogger;
 
 public class HelloWorld {
     public static void main(String[] args){
-        MyLogger.info("main class started");
-        MyLogger.error("error");
-        MyLogger.warning("main class ending");
+        Answer answer = new Answer("Hello World", true);
+        answer.setQuestionId(1);
+        AnswerDAO answerDAO = new AnswerDAO();
+        answerDAO.save(answer);
     }
 }

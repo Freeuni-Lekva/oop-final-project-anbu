@@ -34,6 +34,7 @@ CREATE TABLE questions (
   quiz_id INT NOT NULL,
   question_type ENUM('Question-Response', 'Fill in the Blank', 'Multiple Choice', 'Picture-Response') NOT NULL,
   question_text TEXT NOT NULL,
+  picture_url VARCHAR(255),
   FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)
 );
 
