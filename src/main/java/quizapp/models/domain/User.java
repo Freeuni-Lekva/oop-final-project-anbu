@@ -6,6 +6,16 @@ public class User {
     public int id;
     public String username;
     public String passwordHash;
+    public boolean isAdmin;
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void makeAdmin() {
+        isAdmin = true;
+    }
+
     public Date registrationDate;
 
     public int getId() {
