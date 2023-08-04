@@ -5,11 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import quizapp.models.dao.UserDAO;
 import quizapp.models.domain.User;
 import utils.HashService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet(name = "registerServlet", value = "/auth/register")
 public class RegisterServlet extends HttpServlet {
@@ -31,6 +33,19 @@ public class RegisterServlet extends HttpServlet {
             user.setPasswordHash(HashService.hash(password));
 
             dao.save(user);
+
+            Optional<User> newUser = dao.getByUsername(username);
+
+            if (newUser.isPresent()) {
+                User createdUser = newUser.get();
+
+                HttpSession session = req.getSession(true);
+                session.setAttribute("user", createdUser);
+                session.setAttribute("AUTHENTICATED", true);
+            } else {
+                req.getRequestDispatcher("/Auth/registerError.jsp").forward(req, resp);
+                return;
+            }
 
             req.getRequestDispatcher("/Auth/welcome.jsp").forward(req, resp);
         }
