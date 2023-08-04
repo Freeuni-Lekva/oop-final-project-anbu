@@ -4,7 +4,6 @@ import quizapp.models.domain.User;
 import utils.DatabaseConnectionSource;
 import utils.HashService;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,11 +98,6 @@ public class UserDAO implements DAO<User> {
     public boolean update(User user) {
         String query = "update users set username = ?, password_hash = ? where user_id = ?";
 
-//        StringBuilder sb = new StringBuilder("update users set");
-//        sb.append(" %s = ?,".repeat(params.length));
-//        sb.append(String.format("where id = %s", user.id));
-//        String query = sb.toString();
-
         try (Connection conn = _source.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
@@ -153,7 +147,7 @@ public class UserDAO implements DAO<User> {
             if (rs.next()) {
                 User user = new User();
 
-                user.id = rs.getInt("user_ud");
+                user.id = rs.getInt("user_id");
                 user.username = rs.getString("username");
                 user.passwordHash = rs.getString("password_hash");
                 user.registrationDate = rs.getDate("registration_date");
