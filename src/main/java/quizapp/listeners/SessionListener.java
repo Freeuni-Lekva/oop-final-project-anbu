@@ -1,4 +1,4 @@
-package quizapp.auth;
+package quizapp.listeners;
 
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSessionEvent;
