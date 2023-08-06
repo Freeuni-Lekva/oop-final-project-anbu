@@ -4,6 +4,9 @@ USE quizDB;
 -- Drop tables if they exist to avoid errors during re-creation
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS friends;
+DROP TABLE IF EXISTS friend_requests;
+DROP TABLE IF EXISTS challenge_requests;
+DROP TABLE IF EXISTS notes;
 DROP TABLE IF EXISTS quiz_history;
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS questions;
@@ -61,22 +64,43 @@ CREATE TABLE quiz_history (
 
 -- Friends Table
 CREATE TABLE friends (
-  friendship_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id_1 INT NOT NULL,
-  user_id_2 INT NOT NULL,
-  friendship_status ENUM('Pending', 'Accepted') DEFAULT 'Pending',
-  request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id_1) REFERENCES users(user_id),
-  FOREIGN KEY (user_id_2) REFERENCES users(user_id)
+    friendship_id INT AUTO_INCREMENT PRIMARY KEY,
+    username_1 VARCHAR(50) NOT NULL,
+    username_2 VARCHAR(50) NOT NULL,
+    FOREIGN KEY (username_1) REFERENCES users(username),
+    FOREIGN KEY (username_2) REFERENCES users(username)
 );
 
--- Messages Table
-CREATE TABLE messages (
+-- Friend Requests Table
+CREATE TABLE friend_requests (
+  request_id INT AUTO_INCREMENT PRIMARY KEY,
+  sender VARCHAR(50) NOT NULL,
+  receiver VARCHAR(50) NOT NULL,
+  friendship_status ENUM('PENDING', 'ACCEPTED', 'REJECTED') DEFAULT 'PENDING',
+  request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sender) REFERENCES users(username),
+  FOREIGN KEY (receiver) REFERENCES users(username)
+);
+
+-- Challenge Requests Table
+CREATE TABLE challenge_requests (
+    challenge_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender VARCHAR(50) NOT NULL,
+    receiver VARCHAR(50) NOT NULL,
+    quiz_id INT NOT NULL,
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender) REFERENCES  users(username),
+    FOREIGN KEY (receiver) REFERENCES  users(username),
+    FOREIGN KEY (quiz_id) REFERENCES  quizzes(quiz_id)
+);
+
+-- Notes Table
+CREATE TABLE notes (
   message_id INT AUTO_INCREMENT PRIMARY KEY,
-  sender_id INT NOT NULL,
-  receiver_id INT NOT NULL,
-  message_text TEXT NOT NULL,
+  sender VARCHAR(50) NOT NULL,
+  receiver VARCHAR(50) NOT NULL,
+  note TEXT NULL,
   send_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (sender_id) REFERENCES users(user_id),
-  FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+  FOREIGN KEY (sender) REFERENCES users(username),
+  FOREIGN KEY (receiver) REFERENCES users(username)
 );
