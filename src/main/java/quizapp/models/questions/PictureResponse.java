@@ -15,13 +15,11 @@ public class PictureResponse extends Question {
     }
 
     @Override
-    public String renderQuestionHTML() {
+    public String renderQuestionHTML(int questionIndex) {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<div>");
-        htmlBuilder.append("<p>").append(questionText).append("</p>");
+        htmlBuilder.append("<p>").append(questionIndex).append(". ").append(questionText).append("</p>");
         htmlBuilder.append("<img src=\"").append(pictureUrl).append("\" alt=\"Image\">");
-        htmlBuilder.append("<input type=\"text\" name=\"answer\" />");
-        htmlBuilder.append("</div>");
+        htmlBuilder.append("<input type=\"text\" name=\"answer").append(questionIndex).append("\" id = \"").append(questionIndex).append("\">");
         return htmlBuilder.toString();
     }
 

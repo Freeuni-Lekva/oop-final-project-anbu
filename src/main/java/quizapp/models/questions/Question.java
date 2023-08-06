@@ -53,7 +53,7 @@ public abstract class Question {
     public void addAnswer(String answerText, boolean correct){
         answerList.add(new Answer(answerText, correct));
     }
-    public abstract String renderQuestionHTML();
+    public abstract String renderQuestionHTML(int questionIndex);
     public abstract boolean isAnswerCorrect(String userAnswer);
 
 }

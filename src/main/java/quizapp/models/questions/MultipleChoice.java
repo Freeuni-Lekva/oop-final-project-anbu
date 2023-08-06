@@ -13,20 +13,17 @@ public class MultipleChoice extends Question {
     }
 
     @Override
-    public String renderQuestionHTML() {
+    public String renderQuestionHTML(int questionIndex) {
         StringBuilder htmlBuilder = new StringBuilder();
-
-        htmlBuilder.append("<div>");
-        htmlBuilder.append("<p>").append(questionText).append("</p>");
+        htmlBuilder.append("<p>").append(questionIndex).append(". ").append(questionText).append("</p>");
         for (int i = 0; i < answerList.size(); i++) {
+            int radioId = Integer.valueOf(String.valueOf(i) + String.valueOf(questionIndex));
             String choice = answerList.get(i).getAnswerText();
-            htmlBuilder.append("<input type=\"radio\" name=\"answer\" value=\"")
-                    .append(i).append("\" id=\"option").append(i).append("\">")
-                    .append("<label for=\"option").append(i).append("\">")
+            htmlBuilder.append("<input type=\"radio\" name=\"answer").append(questionIndex).append("\" value=\"")
+                    .append(radioId).append("\" id=\"option").append(radioId).append("\">")
+                    .append("<label for=\"option").append(radioId).append("\">")
                     .append(choice).append("</label><br>");
         }
-        htmlBuilder.append("</div>");
-
         return htmlBuilder.toString();
     }
 

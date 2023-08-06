@@ -25,6 +25,9 @@ CREATE TABLE quizzes (
   description TEXT,
   creator_id INT NOT NULL,
   creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  randomized_order BOOLEAN DEFAULT FALSE,
+  single_page_questions BOOLEAN DEFAULT FALSE,
+  immediate_correction BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (creator_id) REFERENCES users(user_id)
 );
 

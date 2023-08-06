@@ -54,7 +54,7 @@ public class DaoTest {
         assertEquals(quiz2.getQuizName(), quiz2FromDAO.getQuizName());
     }
     private static Quiz getQuizWithQuestions(User creator, String name, String description){
-        Quiz quiz = new Quiz(creator.getId(),name,description);
+        Quiz quiz = new Quiz(creator.getId(),name,description,false ,true, false);
         QuestionResponse questionResponse= new QuestionResponse("question 1?");
         FillInTheBlank fillInTheBlank = new FillInTheBlank("question ___?");
         PictureResponse pictureResponse = new PictureResponse("https://www.w3schools.com/css/img_5terre.jpg", "question 3?");
