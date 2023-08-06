@@ -18,6 +18,12 @@
     <form action="/auth/register" method="post">
         <label for="userinput"></label>
         <input type="text" id="userinput" name="username"><br><br>
+
+        <% Object usernameExists = request.getAttribute("alreadyExists"); %>
+        <% if (usernameExists != null) { %>
+            <p style="color: red">username <%= (String) usernameExists %> already exists</p>
+        <% }; %>
+
         <label for="passinput"></label>
         <input type="text" id="passinput" name="password">
         <button type="submit">Register</button>
