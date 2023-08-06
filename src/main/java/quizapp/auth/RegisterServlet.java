@@ -22,10 +22,9 @@ public class RegisterServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        req.setAttribute("username", username);
-
         if (dao.checkUser(username).isPresent()) {
-            req.getRequestDispatcher("/Auth/usernameAlreadyExists.jsp").forward(req, resp);
+            req.setAttribute("alreadyExists", username);
+            req.getRequestDispatcher("/Auth/register.jsp").forward(req, resp);
         } else {
             User user = new User();
 
@@ -47,12 +46,22 @@ public class RegisterServlet extends HttpServlet {
                 return;
             }
 
-            req.getRequestDispatcher("/Auth/welcome.jsp").forward(req, resp);
+            resp.sendRedirect("/secured/homepage");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+
+        if (session != null) {
+            if ((boolean) session.getAttribute("AUTHENTICATED")) {
+                resp.sendRedirect("/secured/homepage");
+                return;
+            }
+        }
+
         req.getRequestDispatcher("/Auth/register.jsp").forward(req, resp);
     }
 }

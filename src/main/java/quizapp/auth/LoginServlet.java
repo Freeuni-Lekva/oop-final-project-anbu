@@ -1,7 +1,6 @@
 package quizapp.auth;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.HttpConstraint;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,18 +21,16 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if (dao.checkCredentials(username, password)) {
-            req.setAttribute("username", username);
-            req.setAttribute("password", password);
-
             User user = dao.getByUsername(username).get();
 
             HttpSession session = req.getSession(true);
             session.setAttribute("user", user);
             session.setAttribute("AUTHENTICATED", true);
-
-            req.getRequestDispatcher("/Auth/welcome.jsp").forward(req, resp);
+            
+            resp.sendRedirect("/secured/homepage");
         } else {
-            req.getRequestDispatcher("/Auth/invalidCredentials.jsp").forward(req, resp);
+            req.setAttribute("invalidCredentials", true);
+            req.getRequestDispatcher("/Auth/login.jsp").forward(req, resp);
         }
     }
 
@@ -44,7 +41,7 @@ public class LoginServlet extends HttpServlet {
         boolean isAuthenticated = (boolean) session.getAttribute("AUTHENTICATED");
 
         if (isAuthenticated) {
-            req.getRequestDispatcher("/Auth/welcome.jsp").forward(req, resp);
+            resp.sendRedirect("/secured/homepage");
             return;
         }
 
