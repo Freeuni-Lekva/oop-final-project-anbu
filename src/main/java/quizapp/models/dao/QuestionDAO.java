@@ -56,7 +56,7 @@ public class QuestionDAO implements DAO<Question> {
         ) {
 
             ps.setInt(1, quizId);
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(getQuestionFromResultSet(rs));
@@ -83,22 +83,20 @@ public class QuestionDAO implements DAO<Question> {
         Question question;
         switch (questionType) {
             case QUESTION_RESPONSE:
-                if (answerList.size() > 1)
-                    MyLogger.warning("question with Id: " + questionId + " has more than one answer");
-                question = new QuestionResponse(questionId, quizId, questionText, answerList.get(0));
+                question = new QuestionResponse(questionId, quizId, questionText);
+                question.addAllAnswers(answerList);
                 break;
             case FILL_IN_THE_BLANK:
-                if (answerList.size() > 1)
-                    MyLogger.warning("question with Id: " + questionId + " has more than one answer");
-                question = new FillInTheBlank(questionId, quizId, questionText, answerList.get(0));
+                question = new FillInTheBlank(questionId, quizId, questionText);
+                question.addAllAnswers(answerList);
                 break;
             case MULTIPLE_CHOICE:
-                question = new MultipleChoice(questionId, quizId, questionText, answerList);
+                question = new MultipleChoice(questionId, quizId, questionText);
+                question.addAllAnswers(answerList);
                 break;
             case PICTURE_RESPONSE:
-                if (answerList.size() > 1)
-                    MyLogger.warning("question with Id: " + questionId + " has more than one answer");
-                question = new PictureResponse(questionId, quizId, pictureUrl, questionText, answerList.get(0));
+                question = new PictureResponse(questionId, quizId, pictureUrl, questionText);
+                question.addAllAnswers(answerList);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid question type: " + questionTypeStr);
@@ -134,35 +132,15 @@ public class QuestionDAO implements DAO<Question> {
             ResultSet rs = ps.getGeneratedKeys();
             int questionId = -1;
             if (rs.next()) {
-                questionId = rs.getInt("question_id");
+                questionId = rs.getInt(1);
             } else {
                 throw new SQLException("Failed to get generated question_id.");
             }
-            Answer answer;
-            switch (question.getQuestionType()) {
-                case QUESTION_RESPONSE:
-                    answer = ((QuestionResponse) question).getAnswer();
-                    answer.setQuestionId(questionId);
-                    answerDAO.save(answer);
-                    break;
-                case FILL_IN_THE_BLANK:
-                    answer = ((FillInTheBlank) question).getAnswer();
-                    answer.setQuestionId(questionId);
-                    answerDAO.save(answer);
-                    break;
-                case MULTIPLE_CHOICE:
-                    for (Answer ans : ((MultipleChoice) question).getChoices()) {
-                        ans.setQuestionId(questionId);
-                        answerDAO.save(ans);
-                    }
-                    break;
-                case PICTURE_RESPONSE:
-                    answer = ((PictureResponse) question).getAnswer();
-                    answer.setQuestionId(questionId);
-                    answerDAO.save(answer);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid question type: " + question.getQuestionText());
+            question.setQuestionId(questionId);
+
+            for(Answer answer : question.getAnswerList()){
+                answer.setQuestionId(questionId);
+                answerDAO.save(answer);
             }
 
             return rowsInserted > 0;

@@ -7,18 +7,27 @@ import java.util.List;
 public class Quiz {
     private int quizId;
     private int creatorId;
-    private String title;
+    private String quizName;
     private String description;
-    private Date createDate;
+    private Date creationDate;
     private List<Question> questions;
 
-    public Quiz(int quizId,int creatorId, String title, String description, Date createDate) {
+    public Quiz(int quizId,int creatorId, String quizName, String description, Date creationDate) {
         this.quizId = quizId;
         this.creatorId = creatorId;
-        this.title = title;
+        this.quizName = quizName;
         this.description = description;
-        this.createDate = createDate;
+        this.creationDate = creationDate;
         this.questions = new ArrayList<>();
+    }
+    public Quiz(int creatorId, String quizName, String description) {
+        this.creatorId = creatorId;
+        this.quizName = quizName;
+        this.description = description;
+        this.questions = new ArrayList<>();
+    }
+    public void setQuizId(int quizId){
+        this.quizId = quizId;
     }
     public int getId(){
         return this.quizId;
@@ -26,14 +35,14 @@ public class Quiz {
     public int getCreatorId(){
         return this.creatorId;
     }
-    public String getTitle(){
-        return this.title;
+    public String getQuizName(){
+        return this.quizName;
     }
     public String getDescription(){
         return this.description;
     }
-    public Date getCreateDate(){
-        return this.createDate;
+    public Date getCreationDate(){
+        return this.creationDate;
     }
 
     public void addAllQuestions(List<Question> questions) {
@@ -51,4 +60,5 @@ public class Quiz {
     public List<Question> getQuestions() {
         return questions;
     }
+
 }

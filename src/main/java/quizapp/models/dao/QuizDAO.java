@@ -32,7 +32,7 @@ public class QuizDAO implements DAO<Quiz> {
         ) {
 
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
             Quiz quiz;
             if (rs.next()) {
                 quiz = getQuizFromResultSet(rs);
@@ -40,7 +40,7 @@ public class QuizDAO implements DAO<Quiz> {
             }
 
         } catch (SQLException e) {
-            MyLogger.error("Error occurred while connecting to database: UserDAO::getAll");
+            MyLogger.error(e.getMessage());
         } catch (Exception e) {
             MyLogger.error(e.getMessage(), e);
         }
@@ -78,7 +78,7 @@ public class QuizDAO implements DAO<Quiz> {
         ) {
 
             ps.setInt(1, creatorId);
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(getQuizFromResultSet(rs));
@@ -95,23 +95,23 @@ public class QuizDAO implements DAO<Quiz> {
     private Quiz getQuizFromResultSet(ResultSet rs) throws SQLException, Exception {
         int quizId = rs.getInt("quiz_id");
         int creatorId = rs.getInt("creator_id");
-        String title = rs.getString("title");
+        String quizName = rs.getString("quizName");
         String description = rs.getString("description");
         Date createDate = rs.getDate("create_date");
         List<Question> questions = questionDAO.getByQuizId(quizId);
-        Quiz quiz = new Quiz(quizId, creatorId, title, description, createDate);
+        Quiz quiz = new Quiz(quizId, creatorId, quizName, description, createDate);
         quiz.addAllQuestions(questions);
         return quiz;
     }
 
     @Override
     public boolean save(Quiz quiz) {
-        String query = "INSERT INTO questions (quiz_name, description, creator_id) VALUES (?, ?, ?)";
+        String query = "INSERT INTO quizzes (quiz_name, description, creator_id) VALUES (?, ?, ?)";
 
         try (Connection conn = _source.getConnection();
              PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, quiz.getId());
+            ps.setString(1, quiz.getQuizName());
             ps.setString(2, quiz.getDescription());
             ps.setInt(3, quiz.getCreatorId());
 
@@ -119,11 +119,11 @@ public class QuizDAO implements DAO<Quiz> {
             ResultSet rs = ps.getGeneratedKeys();
             int quizId = -1;
             if (rs.next()) {
-                quizId = rs.getInt("quiz_id");
+                quizId = rs.getInt(1);
             } else {
                 throw new SQLException("Failed to get generated quiz_id.");
             }
-
+            quiz.setQuizId(quizId);
             for (Question question : quiz.getQuestions()) {
                 question.setQuizId(quizId);
                 questionDAO.save(question);

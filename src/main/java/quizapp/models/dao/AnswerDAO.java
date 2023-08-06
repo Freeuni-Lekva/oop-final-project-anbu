@@ -51,7 +51,7 @@ public class AnswerDAO implements DAO<Answer>{
              ) {
 
             ps.setInt(1, questionId);
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Answer answer = new Answer(rs.getString("answer_text"),rs.getBoolean("is_correct"));
                 answer.setId(rs.getInt("answer_id"));
@@ -61,7 +61,7 @@ public class AnswerDAO implements DAO<Answer>{
             }
 
         } catch (SQLException e) {
-            MyLogger.error("Error occurred while connecting to database: UserDAO::getAll");
+            MyLogger.error(e.getMessage());
         }
         if(list.size() == 0)  {
             throw new Exception("answers for question: " + questionId + " does not exist");
@@ -110,7 +110,7 @@ public class AnswerDAO implements DAO<Answer>{
             ps.execute();
 
         } catch (SQLException e) {
-            MyLogger.error("error occurred while connecting to database: UserDAO::delete");
+            MyLogger.error(e.getMessage());
             return false;
         }
 
@@ -128,7 +128,7 @@ public class AnswerDAO implements DAO<Answer>{
             ps.execute();
 
         } catch (SQLException e) {
-            MyLogger.error("error occurred while connecting to database: UserDAO::delete");
+            MyLogger.error(e.getMessage());
             return false;
         }
 
