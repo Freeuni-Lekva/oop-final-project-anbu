@@ -14,6 +14,17 @@
     <h1>Login page</h1>
     <p>Plaase log in</p>
 
+    <%
+        Object invalidCredentials = request.getAttribute("invalidCredentials");
+        boolean invalidCredentialsFlag = true;
+        if (invalidCredentials == null) {
+            invalidCredentialsFlag = false;
+        }
+    %>
+    <% if (invalidCredentialsFlag) { %>
+        <p style="color: red">invalid credentials</p>
+    <% }; %>
+
     <form action="/auth/login" method="post">
         <label for="userinput"></label>
         <input type="text" id="userinput" name="username">
