@@ -7,33 +7,58 @@ import java.util.List;
 public class Quiz {
     private int quizId;
     private int creatorId;
-    private String title;
+    private String quizName;
     private String description;
-    private Date createDate;
+    private Date creationDate;
     private List<Question> questions;
+    private boolean randomizedOrder;
+    private boolean singlePageQuestions;
+    private boolean immediateCorrection;
 
-    public Quiz(int quizId,int creatorId, String title, String description, Date createDate) {
+    public Quiz(int quizId, int creatorId, String quizName, String description, Date creationDate, boolean randomizedOrder, boolean singlePageQuestions, boolean immediateCorrection) {
         this.quizId = quizId;
         this.creatorId = creatorId;
-        this.title = title;
+        this.quizName = quizName;
         this.description = description;
-        this.createDate = createDate;
+        this.creationDate = creationDate;
         this.questions = new ArrayList<>();
+        this.randomizedOrder = randomizedOrder;
+        this.singlePageQuestions = singlePageQuestions;
+        this.immediateCorrection = immediateCorrection;
     }
-    public int getId(){
+
+    public Quiz(int creatorId, String quizName, String description, boolean randomizedOrder, boolean singlePageQuestions, boolean immediateCorrection) {
+        this.creatorId = creatorId;
+        this.quizName = quizName;
+        this.description = description;
+        this.questions = new ArrayList<>();
+        this.randomizedOrder = randomizedOrder;
+        this.singlePageQuestions = singlePageQuestions;
+        this.immediateCorrection = immediateCorrection;
+    }
+
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
+    }
+
+    public int getId() {
         return this.quizId;
     }
-    public int getCreatorId(){
+
+    public int getCreatorId() {
         return this.creatorId;
     }
-    public String getTitle(){
-        return this.title;
+
+    public String getQuizName() {
+        return this.quizName;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return this.description;
     }
-    public Date getCreateDate(){
-        return this.createDate;
+
+    public Date getCreationDate() {
+        return this.creationDate;
     }
 
     public void addAllQuestions(List<Question> questions) {
@@ -51,4 +76,41 @@ public class Quiz {
     public List<Question> getQuestions() {
         return questions;
     }
+
+    public boolean getRandomizedOrder() {
+        return randomizedOrder;
+    }
+
+    public boolean getSinglePageQuestions() {
+        return singlePageQuestions;
+    }
+
+    public boolean getImmediateCorrection() {
+        return immediateCorrection;
+    }
+
+    public void setRandomizedOrder(boolean bool) {
+        randomizedOrder = bool;
+    }
+
+    public void setSinglePageQuestions(boolean bool) {
+        singlePageQuestions = bool;
+    }
+
+    public void setImmediateCorrection(boolean bool) {
+        immediateCorrection = bool;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public void setQuizName(String name) {
+        this.quizName = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
+

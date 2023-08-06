@@ -42,4 +42,22 @@ public class Answer {
     public void setCorrect(boolean correct) {
         isCorrect = correct;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Check if the object is the same reference
+        if (this == obj) {
+            return true;
+        }
+
+        // Check if the object is null or not of the same class
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        // Cast the object to Answer type and compare the fields
+        Answer other = (Answer) obj;
+        return isCorrect == other.isCorrect && answerText.equals(other.answerText);
+    }
+
 }

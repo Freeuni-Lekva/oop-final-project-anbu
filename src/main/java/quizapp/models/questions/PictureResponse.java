@@ -1,78 +1,37 @@
 package quizapp.models.questions;
 
-public class PictureResponse implements Question {
-    private int id;
-    private int quizId;
-    private final QuestionType questionType = QuestionType.PICTURE_RESPONSE;
-    private final String pictureUrl;
-    private final String question;
-    private final Answer correctAnswer;
+public class PictureResponse extends Question {
 
-    public PictureResponse(String pictureUrl, String question, Answer correctAnswer) {
+    private String pictureUrl;
+
+    public PictureResponse(String pictureUrl, String questionText) {
+        super(QuestionType.PICTURE_RESPONSE, questionText);
         this.pictureUrl = pictureUrl;
-        this.question = question;
-        this.correctAnswer = correctAnswer;
     }
 
-    public PictureResponse(int id, int quizId, String pictureUrl, String question, Answer correctAnswer) {
-        this.id = id;
-        this.quizId = quizId;
+    public PictureResponse(int questionId, int quizId, String pictureUrl, String questionText) {
+        super(questionId,quizId, QuestionType.PICTURE_RESPONSE, questionText);
         this.pictureUrl = pictureUrl;
-        this.question = question;
-        this.correctAnswer = correctAnswer;
     }
 
     @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public int getQuizId() {
-        return quizId;
-    }
-
-    @Override
-    public void setQuizId(int id) {
-        this.quizId = id;
-    }
-
-    @Override
-    public String renderQuestionHTML() {
+    public String renderQuestionHTML(int questionIndex) {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<div>");
-        htmlBuilder.append("<p>").append(question).append("</p>");
+        htmlBuilder.append("<p>").append(questionIndex).append(". ").append(questionText).append("</p>");
         htmlBuilder.append("<img src=\"").append(pictureUrl).append("\" alt=\"Image\">");
-        htmlBuilder.append("<input type=\"text\" name=\"answer\" />");
-        htmlBuilder.append("</div>");
+        htmlBuilder.append("<input type=\"text\" name=\"answer").append(questionIndex).append("\" id = \"").append(questionIndex).append("\">");
         return htmlBuilder.toString();
     }
 
     @Override
-    public QuestionType getQuestionType() {
-        return questionType;
-    }
-
-    @Override
-    public String getQuestionText() {
-        return question;
-    }
-
-    @Override
     public boolean isAnswerCorrect(String userAnswer) {
-        return userAnswer != null && userAnswer.equals(correctAnswer.getAnswerText());
+        return userAnswer != null && answerList.contains(new Answer(userAnswer, true));
     }
 
     public String getPictureUrl() {
         return pictureUrl;
     }
-
-    public Answer getAnswer() {
-        return correctAnswer;
+    public void setPictureUrl(String newUrl){
+        this.pictureUrl = newUrl;
     }
 }

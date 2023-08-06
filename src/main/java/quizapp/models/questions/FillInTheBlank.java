@@ -1,70 +1,30 @@
 package quizapp.models.questions;
 
-public class FillInTheBlank implements Question {
-    private int id;
-    private int quizId;
-    private final QuestionType questionType = QuestionType.FILL_IN_THE_BLANK;
-    private final String question;
-    private final Answer correctAnswer;
+import java.util.ArrayList;
+import java.util.List;
 
-    public FillInTheBlank(String question, Answer correctAnswer) {
-        this.question = question;
-        this.correctAnswer = correctAnswer;
+public class FillInTheBlank extends Question {
+
+
+    public FillInTheBlank(String question) {
+        super(QuestionType.FILL_IN_THE_BLANK, question);
     }
 
-    public FillInTheBlank(int id, int quizId, String question, Answer correctAnswer) {
-        this.id = id;
-        this.quizId = quizId;
-        this.question = question;
-        this.correctAnswer = correctAnswer;
+    public FillInTheBlank(int questionId, int quizId, String question) {
+        super(questionId, quizId, QuestionType.FILL_IN_THE_BLANK, question);
     }
 
     @Override
     public boolean isAnswerCorrect(String userAnswer) {
-        return userAnswer != null && userAnswer.equals(correctAnswer.getAnswerText());
+        return userAnswer != null && answerList.contains(new Answer(userAnswer,true));
     }
 
     @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public int getQuizId() {
-        return quizId;
-    }
-
-    @Override
-    public void setQuizId(int id) {
-        this.quizId = id;
-    }
-
-    @Override
-    public String renderQuestionHTML() {
+    public String renderQuestionHTML(int questionIndex) {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<div>");
-        htmlBuilder.append("<p>").append(question).append("</p>");
-        htmlBuilder.append("<input type=\"text\" name=\"answer\" />");
-        htmlBuilder.append("</div>");
+        htmlBuilder.append("<p>").append(questionIndex).append(". ").append(questionText).append("</p>");
+        htmlBuilder.append("<input type=\"text\" name=\"answer").append(questionIndex).append("\" id = \"").append(questionIndex).append("\">");
         return htmlBuilder.toString();
     }
 
-    @Override
-    public QuestionType getQuestionType() {
-        return questionType;
-    }
-
-    @Override
-    public String getQuestionText() {
-        return question;
-    }
-
-    public Answer getAnswer() {
-        return correctAnswer;
-    }
 }
