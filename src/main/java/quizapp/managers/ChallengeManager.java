@@ -2,6 +2,7 @@ package quizapp.managers;
 
 import quizapp.models.domain.message.ChallengeRequest;
 import utils.DatabaseConnectionSource;
+import utils.MyLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +28,7 @@ public class ChallengeManager {
             ps.setString(2, receiver);
             ps.setInt(3, quiz_id);
 
+            MyLogger.info(ps.toString());
             ps.execute();
 
         } catch (SQLException e) {
@@ -34,8 +36,8 @@ public class ChallengeManager {
         }
     }
 
-    public List<ChallengeRequest> getChallengeRequestsByUsername(String username) {
-        String sql = "select * from challenge_requests where receiver = ?";
+    public List<ChallengeRequest> getChallengeRequests(String username) {
+        String sql = "select * from challenge_requests where receiver = ? order by request_date";
 
         List<ChallengeRequest> challenges = new ArrayList<>();
 
@@ -44,6 +46,7 @@ public class ChallengeManager {
 
             ps.setString(1, username);
 
+            MyLogger.info(ps.toString());
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
