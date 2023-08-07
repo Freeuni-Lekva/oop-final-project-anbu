@@ -47,8 +47,8 @@ public class DaoTest {
         quizDAO.save(quiz1);
         quizDAO.save(quiz2);
 
-        Quiz quiz1FromDAO =  quizDAO.get(quiz1.getId()).orElse(null);
-        Quiz quiz2FromDAO =   quizDAO.get(quiz2.getId()).orElse(null);
+        Quiz quiz1FromDAO =  quizDAO.get(quiz1.getQuizId()).orElse(null);
+        Quiz quiz2FromDAO =   quizDAO.get(quiz2.getQuizId()).orElse(null);
 
         assertEquals(quiz1.getQuizName(), quiz1FromDAO.getQuizName());
         assertEquals(quiz2.getQuizName(), quiz2FromDAO.getQuizName());

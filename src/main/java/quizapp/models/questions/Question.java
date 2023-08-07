@@ -54,6 +54,7 @@ public abstract class Question {
         answerList.add(new Answer(answerText, correct));
     }
     public abstract String renderQuestionHTML(int questionIndex);
+
     public abstract boolean isAnswerCorrect(String userAnswer);
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MultipleChoice extends Question {
 
-    public MultipleChoice( String questionText) {
+    public MultipleChoice(String questionText) {
         super(QuestionType.MULTIPLE_CHOICE, questionText);
     }
 
@@ -15,15 +15,23 @@ public class MultipleChoice extends Question {
     @Override
     public String renderQuestionHTML(int questionIndex) {
         StringBuilder htmlBuilder = new StringBuilder();
+        htmlBuilder.append("<div class = \"question\">");
         htmlBuilder.append("<p>").append(questionIndex).append(". ").append(questionText).append("</p>");
+        htmlBuilder.append("</div>");
+        htmlBuilder.append("<div class = \"answer-input radio-input\">");
         for (int i = 0; i < answerList.size(); i++) {
-            int radioId = Integer.valueOf(String.valueOf(i) + String.valueOf(questionIndex));
+            int radioId = Integer.valueOf(String.valueOf(i) + String.valueOf(questionIndex) );
             String choice = answerList.get(i).getAnswerText();
-            htmlBuilder.append("<input type=\"radio\" name=\"answer").append(questionIndex).append("\" value=\"")
-                    .append(radioId).append("\" id=\"option").append(radioId).append("\">")
-                    .append("<label for=\"option").append(radioId).append("\">")
-                    .append(choice).append("</label><br>");
+
+            htmlBuilder.append("<label class = \"radio-option\">");
+            htmlBuilder.append("<input type=\"radio\" name=\"").append(questionId).append("\" value=\"")
+                    .append(choice).append("\" id=\"").append(radioId).append("\">");
+            htmlBuilder.append("<span class=\"radio-style\">");
+            htmlBuilder.append("</span>");
+            htmlBuilder.append(choice);
+            htmlBuilder.append("</label><br>");
         }
+        htmlBuilder.append("</div>");
         return htmlBuilder.toString();
     }
 

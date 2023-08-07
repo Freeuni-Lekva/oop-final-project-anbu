@@ -41,7 +41,7 @@ public class Quiz {
         this.quizId = quizId;
     }
 
-    public int getId() {
+    public int getQuizId() {
         return this.quizId;
     }
 
