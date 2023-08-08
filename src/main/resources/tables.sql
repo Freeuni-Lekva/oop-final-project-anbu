@@ -31,6 +31,7 @@ CREATE TABLE quizzes (
   randomized_order BOOLEAN DEFAULT FALSE,
   single_page_questions BOOLEAN DEFAULT FALSE,
   immediate_correction BOOLEAN DEFAULT FALSE,
+  time_limit_minutes INT default 60,
   FOREIGN KEY (creator_id) REFERENCES users(user_id)
 );
 
