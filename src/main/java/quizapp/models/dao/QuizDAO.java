@@ -1,6 +1,7 @@
 package quizapp.models.dao;
 
-import quizapp.models.questions.*;
+import quizapp.models.questions.Question;
+import quizapp.models.questions.Quiz;
 import utils.DatabaseConnectionSource;
 import utils.MyLogger;
 

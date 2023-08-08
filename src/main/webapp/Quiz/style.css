@@ -72,7 +72,6 @@
         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
     }
 
-    /* Add hover effect */
     input[type="text"]:hover {
         border-color: #2a43b0;
     }
@@ -94,10 +93,24 @@
         display: inline-block;
         width: 20px;
         height: 20px;
-        border: 2px solid #3e73b3;
+        border: 2px solid #2a43b0;
         border-radius: 50%;
         margin-right: 5px;
         position: relative;
+    }
+
+    .radio-option {
+        flex: 1;
+        width: 48%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .radio-option:hover {
+        background-color: #3e73b3;
+        color: #fff;
     }
 
     input[type="radio"]:checked + .radio-style::after {
@@ -107,7 +120,7 @@
         left: 4px;
         width: 12px;
         height: 12px;
-        background-color: #3e73b3;
+        background-color: #2a43b0;
         border-radius: 50%;
     }
 
@@ -123,12 +136,9 @@
         margin-top: 20px;
         padding: 10px;
     }
-    .radio-option{
-       flex: 1;
-    }
-
      .centered {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+

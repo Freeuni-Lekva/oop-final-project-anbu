@@ -1,12 +1,8 @@
 <%@ page import = "java.util.List" %>
-<%@ page import = "java.util.Collections" %>
 <%@ page import="quizapp.models.questions.Question" %>
 <%@ page import="quizapp.models.questions.QuestionType" %>
 <%@ page import="quizapp.models.dao.QuizDAO" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
-<%@ page import="quizapp.models.domain.User" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %>
 <%
     Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
     List<Question> questions = quiz.getQuestions();
@@ -20,8 +16,10 @@
      <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1><%= quiz.getQuizName()%></h1>
-    <p><%= quiz.getDescription()%></p>
+     <div class = "info">
+        <h1 class = " centered"><%= quiz.getQuizName()%></h1>
+        <p class = " centered"><%= quiz.getDescription()%></p>
+    </div>
     <div class="centered">
         <div class = "question-container multi-page-container">
             <form method = "post" action = "/gradeQuizServlet">
@@ -36,9 +34,9 @@
                 </div>
             </form>
             <%if(quiz.getImmediateCorrection()){
-                int correct = (Integer) request.getSession().getAttribute("correct");%>
+                int correctCounter = (Integer) request.getSession().getAttribute("correctCounter");%>
                 <div class="result">
-                    <p><%= correct%>/<%= questions.size()%> correct</p>
+                    <p><%= correctCounter%>/<%= questions.size()%> correct</p>
                 </div>
             <%}%>
         </div>

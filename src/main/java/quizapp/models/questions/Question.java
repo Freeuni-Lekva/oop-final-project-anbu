@@ -2,6 +2,7 @@ package quizapp.models.questions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Question {
     protected int questionId;
@@ -57,4 +58,8 @@ public abstract class Question {
 
     public abstract boolean isAnswerCorrect(String userAnswer);
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionId);
+    }
 }
