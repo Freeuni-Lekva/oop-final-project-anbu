@@ -11,15 +11,18 @@
     UserDAO userDAO = new UserDAO();
     Quiz quiz = quizDAO.get(quizId).orElse(null);
     request.getSession().setAttribute("quiz",quiz);
-    User authorUser = null;
-    if(quiz != null) {
-        authorUser = userDAO.get(quiz.getCreatorId()).orElse(null);
+    request.getSession().setAttribute("takingQuiz", false);
+    if (quiz == null) {
+        request.setAttribute("message", "The requested resource was not found.");
+        request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        return;
     }
+    User authorUser = userDAO.get(quiz.getCreatorId()).orElse(null);
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz Page</title>
+    <title>Quiz Welcome Page</title>
     <style>
     body{
         font-family: Sans-Serif;
@@ -126,9 +129,6 @@
     </style>
 </head>
 <body>
-    <%if(quiz == null){%>
-        <h1>error: some mistake occurred while getting the quiz</h1>
-    <%return;}%>
 
     <div class = "flash-card welcome-page-container">
         <div class = "left-div">

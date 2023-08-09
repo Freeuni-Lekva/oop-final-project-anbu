@@ -4,6 +4,8 @@
 <%@ page import="quizapp.models.dao.QuizDAO" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
 <%
+    boolean takingQuiz = (boolean) request.getSession().getAttribute("takingQuiz");
+    if(!takingQuiz){return;}
     Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
     List<Question> questions = quiz.getQuestions();
     int questionIndex = Integer.valueOf(request.getParameter("questionIndex"));
@@ -11,6 +13,8 @@
     long currentTimeMillis = System.currentTimeMillis();
     long timeSpendSeconds = (currentTimeMillis - startTimeMillis) / 1000;
     long timeLeftSeconds = quiz.getTimeLimitMinutes()*60 - timeSpendSeconds;
+    String minutes = timeLeftSeconds/60 < 10 ? "0" + timeLeftSeconds/60:"" + timeLeftSeconds/60;
+    String seconds = timeLeftSeconds%60 < 10 ? "0" + timeLeftSeconds%60:"" + timeLeftSeconds%60;
 %>
 <!DOCTYPE html>
 <html>
@@ -182,7 +186,7 @@
                         <button type="submit">Finish</button>
                     <%}%>
                     </div>
-                    <span class = "centered" id="timer">00:00</span>
+                    <span class = "centered" id="timer"><%= minutes%>:<%= seconds%></span>
                 </div>
             </form>
             <%if(quiz.getImmediateCorrection()){

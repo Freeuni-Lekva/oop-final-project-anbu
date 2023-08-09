@@ -62,4 +62,16 @@ public abstract class Question {
     public int hashCode() {
         return Objects.hash(questionId);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Question other = (Question) obj;
+        return this.questionId == other.questionId && this.questionId != 0;
+    }
 }

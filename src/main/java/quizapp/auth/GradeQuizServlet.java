@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class GradeQuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        MyLogger.info("i am in baby ");
         HttpSession session = request.getSession();
         Quiz quiz = (Quiz) session.getAttribute("quiz");
         long startTimeMillis = (long) session.getAttribute("startTimeMillis");
@@ -40,10 +39,12 @@ public class GradeQuizServlet extends HttpServlet {
 
             for (Question q : quiz.getQuestions()) {
                 String answer = request.getParameter("" + q.getQuestionId());
-                answers.put(q, answer);
                 if (q.isAnswerCorrect(answer)) {
                     correctCounter++;
                 }
+                if (answer == null || answer.equals("")) answer = "not answered";
+                answers.put(q, answer);
+
             }
 
         } else {
@@ -52,11 +53,12 @@ public class GradeQuizServlet extends HttpServlet {
             String answer = request.getParameter("" + question.getQuestionId());
             correctCounter = (Integer) session.getAttribute("correctCounter");
             if (!answers.containsKey(question)) {
-                answers.put(question, answer);
                 if (question.isAnswerCorrect(answer)) {
                     correctCounter++;
                     session.setAttribute("correctCounter", correctCounter);
                 }
+                if (answer == null || answer.equals("")) answer = "not answered";
+                answers.put(question, answer);
             }
             index++;
             if (index < quiz.getQuestions().size() && timeSpentSeconds < timeLimitSeconds) {
@@ -70,7 +72,10 @@ public class GradeQuizServlet extends HttpServlet {
         long minutes = timeSpentSeconds / 60;
         long seconds = timeSpentSeconds % 60;
         //if we want to save results/answers submitted answers are saved in HashMap answers
-
+        session.setAttribute("answers", answers);
+        session.setAttribute("correctCounter", correctCounter);
+        session.setAttribute("timeTookMinutes", minutes);
+        session.setAttribute("timeTookSeconds", seconds);
         MyLogger.info(correctCounter + " out of " + quiz.getQuestions().size() + " questions were correct, time spent: " + minutes + "minutes and " + seconds + " seconds" );
         request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
     }
