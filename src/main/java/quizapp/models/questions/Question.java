@@ -62,4 +62,29 @@ public abstract class Question {
     public int hashCode() {
         return Objects.hash(questionId);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Question other = (Question) obj;
+        return this.questionId == other.questionId && this.questionId != 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{ questionText: ").append(questionText);
+        sb.append(", answers: ");
+        for(Answer answer : answerList) {
+            sb.append(answer.toString());
+        }
+        sb.append(", questionType: ").append(questionType.getValue());
+        sb.append("}");
+        return sb.toString();
+    }
 }
