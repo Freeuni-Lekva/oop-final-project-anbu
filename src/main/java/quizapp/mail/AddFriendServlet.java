@@ -12,7 +12,7 @@ import quizapp.models.domain.User;
 import java.io.IOException;
 
 @WebServlet(name = "addFriendServlet", value = "/addfriend")
-public class AddFriendServlet extends HttpServlet {
+public class    AddFriendServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         FriendManager friendManager = (FriendManager) req.getServletContext().getAttribute("friendManager");

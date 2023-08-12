@@ -19,21 +19,32 @@ public class GradeQuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        Quiz quiz = (Quiz) session.getAttribute("quiz");
-        long startTimeMillis = (long) session.getAttribute("startTimeMillis");
-        long endTimeMillis = System.currentTimeMillis();
 
-        long timeSpentMillis = endTimeMillis - startTimeMillis;
-        long timeSpentSeconds = TimeUnit.MILLISECONDS.toSeconds(timeSpentMillis);
-        long timeLimitSeconds = TimeUnit.MINUTES.toSeconds(quiz.getTimeLimitMinutes());
-        int correctCounter = 0;
-        if (timeSpentSeconds > timeLimitSeconds + 30) {
-            //if user somehow cracked frontend
-            MyLogger.info("oops");
-            session.setAttribute("correctCounter", correctCounter);
-            request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
-            return;
+        Quiz quiz = (Quiz) session.getAttribute("quiz");
+        long timeSpentSeconds = 0;
+        long timeLimitSeconds = 0;
+        if((boolean) session.getAttribute("takingQuiz")){
+            long startTimeMillis = (long) session.getAttribute("startTimeMillis");
+            long endTimeMillis = System.currentTimeMillis();
+
+            long timeSpentMillis = endTimeMillis - startTimeMillis;
+            timeSpentSeconds = TimeUnit.MILLISECONDS.toSeconds(timeSpentMillis);
+            timeLimitSeconds = TimeUnit.MINUTES.toSeconds(quiz.getTimeLimitMinutes());
+            if (timeSpentSeconds > timeLimitSeconds + 30) {
+                //if user somehow cracked frontend
+                MyLogger.info("oops");
+                session.setAttribute("correctCounter", 0);
+                request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
+                return;
+            }
+            timeSpentSeconds = Math.min(quiz.getTimeLimitMinutes()*60,timeSpentSeconds); //ignore couple seconds errors
+            long minutes = timeSpentSeconds / 60;
+            long seconds = timeSpentSeconds % 60;
+            session.setAttribute("timeTookMinutes", minutes);
+            session.setAttribute("timeTookSeconds", seconds);
         }
+
+        int correctCounter = 0;
         HashMap<Question, String> answers = (HashMap<Question, String>) session.getAttribute("answers");
         if (quiz.getSinglePageQuestions()) {
 
@@ -62,21 +73,19 @@ public class GradeQuizServlet extends HttpServlet {
             }
             index++;
             if (index < quiz.getQuestions().size() && timeSpentSeconds < timeLimitSeconds) {
-                request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp?questionIndex=" + index).forward(request, response);
-                request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp?questionIndex=0").forward(request, response);
+                request.setAttribute("questionIndex", index);
+                request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp").forward(request, response);
                 return;
             }
         }
         session.setAttribute("takingQuiz",false);
-        timeSpentSeconds = Math.min(quiz.getTimeLimitMinutes()*60,timeSpentSeconds); //ignore couple seconds errors
-        long minutes = timeSpentSeconds / 60;
-        long seconds = timeSpentSeconds % 60;
+
+
         //if we want to save results/answers submitted answers are saved in HashMap answers
         session.setAttribute("answers", answers);
         session.setAttribute("correctCounter", correctCounter);
-        session.setAttribute("timeTookMinutes", minutes);
-        session.setAttribute("timeTookSeconds", seconds);
-        MyLogger.info(correctCounter + " out of " + quiz.getQuestions().size() + " questions were correct, time spent: " + minutes + "minutes and " + seconds + " seconds" );
+
         request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
+
     }
 }

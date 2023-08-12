@@ -90,7 +90,7 @@
 </head>
 <body>
         <h1>Your Result</h1>
-        <p><b>final score:</b> <%= correctCounter%></p>
+        <p><b>final score:</b> <%= correctCounter%>/<%=questions.size()%> </p>
         <p><b>time took:</b> <%= timeTookMinutes%> minutes and <%= timeTookSeconds%> seconds</p>
         <div class = "flash-card">
             <%for(int i = 0; i < questions.size();i++){%>

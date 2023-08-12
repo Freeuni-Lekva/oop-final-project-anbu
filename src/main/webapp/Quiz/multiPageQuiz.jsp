@@ -8,7 +8,7 @@
     if(!takingQuiz){return;}
     Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
     List<Question> questions = quiz.getQuestions();
-    int questionIndex = Integer.valueOf(request.getParameter("questionIndex"));
+    int questionIndex = (Integer)request.getAttribute("questionIndex");
     long startTimeMillis = (long) session.getAttribute("startTimeMillis");
     long currentTimeMillis = System.currentTimeMillis();
     long timeSpendSeconds = (currentTimeMillis - startTimeMillis) / 1000;

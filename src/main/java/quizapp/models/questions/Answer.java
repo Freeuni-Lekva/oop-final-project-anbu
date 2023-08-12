@@ -55,4 +55,8 @@ public class Answer {
         return isCorrect == other.isCorrect && answerText.equals(other.answerText);
     }
 
+    @Override
+    public String toString() {
+        return "{ answerText: " + answerText + ", isCorrect: " + isCorrect + "}";
+    }
 }

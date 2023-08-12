@@ -17,7 +17,8 @@ public class Quiz {
     private boolean singlePageQuestions;
     private boolean immediateCorrection;
     private int timeLimitMinutes;
-    public Quiz(int quizId, int creatorId, String quizName, String description, Date creationDate, boolean randomizedOrder, boolean singlePageQuestions, boolean immediateCorrection,int timeLimitMinutes) {
+
+    public Quiz(int quizId, int creatorId, String quizName, String description, Date creationDate, boolean randomizedOrder, boolean singlePageQuestions, boolean immediateCorrection, int timeLimitMinutes) {
         this.quizId = quizId;
         this.creatorId = creatorId;
         this.quizName = quizName;
@@ -64,6 +65,7 @@ public class Quiz {
     public Date getCreationDate() {
         return this.creationDate;
     }
+
     public String getFormattedCreationDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MMMM dd", Locale.ENGLISH);
         return dateFormat.format(creationDate);
@@ -127,6 +129,23 @@ public class Quiz {
 
     public int getTimeLimitMinutes() {
         return timeLimitMinutes;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{quizName=").append(quizName);
+        sb.append(", creatorId=").append(creatorId);
+        sb.append(", timeLimitMinutes=").append(timeLimitMinutes);
+        sb.append(", randomizedOrder=").append(randomizedOrder);
+        sb.append(", singlePageQuestions=").append(singlePageQuestions);
+        sb.append(", immediateCorrection=").append(immediateCorrection);
+        sb.append(", questions:");
+        for (Question question : questions) {
+            sb.append(question.toString());
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }
 

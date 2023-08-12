@@ -33,7 +33,8 @@ public class TakeQuizServlet extends HttpServlet {
             request.getRequestDispatcher("/Quiz/singlePageQuiz.jsp").forward(request, response);
         } else {
             request.getSession().setAttribute("correctCounter", 0);
-            request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp?questionIndex=0").forward(request, response);
+            request.setAttribute("questionIndex", 0);
+            request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp").forward(request, response);
         }
     }
 }
