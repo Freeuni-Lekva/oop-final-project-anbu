@@ -11,7 +11,7 @@ import quizapp.models.domain.User;
 
 import java.io.IOException;
 
-@WebServlet(name = "addFriendServlet", value = "/addfriend")
+@WebServlet(name = "addFriendServlet", value = "/secured/addFriend")
 public class AddFriendServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
