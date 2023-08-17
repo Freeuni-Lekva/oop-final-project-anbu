@@ -1,4 +1,4 @@
-USE quizDb;
+USE quizDB;
 -- Insert user into users table
 INSERT INTO users (username, password_hash) VALUES ('example_user', 'hashed_password');
 
