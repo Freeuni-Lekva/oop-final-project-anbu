@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.models.dao.UserDAO;
 import quizapp.models.domain.User;
+import quizapp.settings.Endpoints;
+import quizapp.settings.JSP;
 import utils.HashService;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(name = "registerServlet", value = "/auth/register")
+@WebServlet(name = "registerServlet", value = Endpoints.REGISTER)
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,9 +24,9 @@ public class RegisterServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        if (dao.checkUser(username).isPresent()) {
+        if (dao.getByUsername(username).isPresent()) {
             req.setAttribute("alreadyExists", username);
-            req.getRequestDispatcher("/Auth/register.jsp").forward(req, resp);
+            req.getRequestDispatcher(JSP.REGISTER).forward(req, resp);
         } else {
             User user = new User();
 
@@ -42,26 +44,25 @@ public class RegisterServlet extends HttpServlet {
                 session.setAttribute("user", createdUser);
                 session.setAttribute("AUTHENTICATED", true);
             } else {
-                req.getRequestDispatcher("/Auth/registerError.jsp").forward(req, resp);
+                req.getRequestDispatcher(JSP.REGISTER_ERROR).forward(req, resp);
                 return;
             }
 
-            resp.sendRedirect("/secured/homepage");
+            resp.sendRedirect(Endpoints.HOMEPAGE);
         }
     }
 
-        @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
 
         if (session != null) {
             if ((boolean) session.getAttribute("AUTHENTICATED")) {
-                resp.sendRedirect("/secured/homepage");
+                resp.sendRedirect(Endpoints.HOMEPAGE);
                 return;
             }
         }
 
-        req.getRequestDispatcher("/Auth/register.jsp").forward(req, resp);
+        req.getRequestDispatcher(JSP.REGISTER).forward(req, resp);
     }
 }

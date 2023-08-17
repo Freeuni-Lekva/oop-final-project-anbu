@@ -8,10 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.managers.FriendManager;
 import quizapp.models.domain.User;
+import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
-@WebServlet(name = "addFriendServlet", value = "/secured/addFriend")
+@WebServlet(name = "addFriendServlet", value = Endpoints.ADD_FRIEND)
 public class AddFriendServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,6 +26,6 @@ public class AddFriendServlet extends HttpServlet {
 
         friendManager.makeFriends(sender, receiver);
 
-        resp.sendRedirect("/secured/homepage");
+        resp.sendRedirect(Endpoints.HOMEPAGE);
     }
 }
