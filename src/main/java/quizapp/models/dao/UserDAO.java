@@ -147,10 +147,10 @@ public class UserDAO implements DAO<User> {
             if (rs.next()) {
                 User user = new User();
 
-                user.id = rs.getInt("user_id");
-                user.username = rs.getString("username");
-                user.passwordHash = rs.getString("password_hash");
-                user.registrationDate = rs.getDate("registration_date");
+                user.setId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPasswordHash(rs.getString("password_hash"));
+                user.setRegistrationDate(rs.getDate("registration_date"));
 
                 return Optional.of(user);
             }
@@ -198,7 +198,7 @@ public class UserDAO implements DAO<User> {
 
         if (user != null) {
             String providedPasswordHash = HashService.hash(password);
-            if (providedPasswordHash.equals(user.passwordHash)) return true;
+            if (providedPasswordHash.equals(user.getPasswordHash())) return true;
         }
 
         return false;
