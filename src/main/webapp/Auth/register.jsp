@@ -17,7 +17,7 @@
 
     <form action="/auth/register" method="post">
         <label for="userinput"></label>
-        <input type="text" id="userinput" name="username"><br><br>
+        <input type="text" id="userinput" name="username" required><br><br>
 
         <% Object usernameExists = request.getAttribute("alreadyExists"); %>
         <% if (usernameExists != null) { %>
@@ -25,7 +25,7 @@
         <% }; %>
 
         <label for="passinput"></label>
-        <input type="text" id="passinput" name="password">
+        <input type="text" id="passinput" name="password" required>
         <button type="submit">Register</button>
     </form>
 
