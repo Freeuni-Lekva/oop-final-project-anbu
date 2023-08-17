@@ -1,16 +1,16 @@
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import quizapp.models.dao.QuizDAO;
 import quizapp.models.dao.UserDAO;
 import quizapp.models.domain.User;
 import quizapp.models.questions.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DaoTest {
     private static UserDAO userDAO;
     private static QuizDAO quizDAO;
-    @BeforeClass
+    @BeforeAll
     public static void setUp(){
         userDAO = new UserDAO();
         quizDAO = new QuizDAO();
