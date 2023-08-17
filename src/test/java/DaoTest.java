@@ -47,14 +47,14 @@ public class DaoTest {
         quizDAO.save(quiz1);
         quizDAO.save(quiz2);
 
-        Quiz quiz1FromDAO =  quizDAO.get(quiz1.getId()).orElse(null);
-        Quiz quiz2FromDAO =   quizDAO.get(quiz2.getId()).orElse(null);
+        Quiz quiz1FromDAO =  quizDAO.get(quiz1.getQuizId()).orElse(null);
+        Quiz quiz2FromDAO =   quizDAO.get(quiz2.getQuizId()).orElse(null);
 
         assertEquals(quiz1.getQuizName(), quiz1FromDAO.getQuizName());
         assertEquals(quiz2.getQuizName(), quiz2FromDAO.getQuizName());
     }
     private static Quiz getQuizWithQuestions(User creator, String name, String description){
-        Quiz quiz = new Quiz(creator.getId(),name,description,false ,true, false);
+        Quiz quiz = new Quiz(creator.getId(),name,description,false ,true, false, 60);
         QuestionResponse questionResponse= new QuestionResponse("question 1?");
         FillInTheBlank fillInTheBlank = new FillInTheBlank("question ___?");
         PictureResponse pictureResponse = new PictureResponse("https://www.w3schools.com/css/img_5terre.jpg", "question 3?");

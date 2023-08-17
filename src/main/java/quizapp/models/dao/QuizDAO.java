@@ -1,6 +1,7 @@
 package quizapp.models.dao;
 
-import quizapp.models.questions.*;
+import quizapp.models.questions.Question;
+import quizapp.models.questions.Quiz;
 import utils.DatabaseConnectionSource;
 import utils.MyLogger;
 
@@ -102,14 +103,15 @@ public class QuizDAO implements DAO<Quiz> {
         boolean randomizedOrder = rs.getBoolean("randomized_order");
         boolean singlePageQuestions = rs.getBoolean("single_page_questions");
         boolean immediateCorrection = rs.getBoolean("immediate_correction");
-        Quiz quiz = new Quiz(quizId, creatorId, quizName, description, creationDate,randomizedOrder,singlePageQuestions,immediateCorrection);
+        int timeLimitMinutes = rs.getInt("time_limit_minutes");
+        Quiz quiz = new Quiz(quizId, creatorId, quizName, description, creationDate,randomizedOrder,singlePageQuestions,immediateCorrection,timeLimitMinutes);
         quiz.addAllQuestions(questions);
         return quiz;
     }
 
     @Override
     public boolean save(Quiz quiz) {
-        String query = "INSERT INTO quizzes (quiz_name, description, creator_id,randomized_order,single_page_questions,immediate_correction) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO quizzes (quiz_name, description, creator_id,randomized_order,single_page_questions,immediate_correction,time_limit_minutes) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = _source.getConnection();
              PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -120,6 +122,7 @@ public class QuizDAO implements DAO<Quiz> {
             ps.setBoolean(4,quiz.getRandomizedOrder());
             ps.setBoolean(5,quiz.getSinglePageQuestions());
             ps.setBoolean(6,quiz.getImmediateCorrection());
+            ps.setInt(7, quiz.getTimeLimitMinutes());
 
             int rowsInserted = ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();

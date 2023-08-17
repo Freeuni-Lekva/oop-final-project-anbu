@@ -6,43 +6,36 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import quizapp.models.dao.QuizDAO;
+import quizapp.models.questions.Question;
 import quizapp.models.questions.Quiz;
-import utils.MyLogger;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
-@WebServlet(name = "takeQuizServlet", value = "/takeQuizServlet")
+@WebServlet(name = "takeQuizServlet", value = "/secured/takeQuizServlet")
 public class TakeQuizServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            // Get the index of the quiz from the form submission
-            int quizIndex = Integer.parseInt(request.getParameter("quizIndex"));
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession();
+        boolean takingQuiz = (boolean) session.getAttribute("takingQuiz");
+        Quiz quiz = (Quiz) session.getAttribute("quiz");
+        if(!takingQuiz){
+            session.setAttribute("answers", new HashMap<Question, String>()); //answers
+            session.setAttribute("startTimeMillis",System.currentTimeMillis()); //start time
+        }
+        session.setAttribute("takingQuiz",true);
 
-            // In a real application, you would fetch the quiz details from the database using the quizIndex
-            // For this example, let's assume we have a QuizDao class to retrieve the quiz object
-            QuizDAO quizDao = new QuizDAO(); // Instantiate your QuizDao class
-            Quiz quiz = quizDao.get(quizIndex).orElse(null); // Implement this method to retrieve the quiz by index
-            MyLogger.info((quiz != null) + "");
-            if (quiz != null) {
-                // Save the quiz object in the session so it can be accessed in the question page
-                HttpSession session = request.getSession();
-                session.setAttribute("quiz", quiz);
+        if (quiz.getRandomizedOrder()) Collections.shuffle(quiz.getQuestions());
 
-                // Redirect to the question page
-                response.sendRedirect("quizPage.jsp");
-            } else {
-                // If the quiz with the provided index is not found, redirect back to the homepage
-                response.sendRedirect("index.jsp");
-            }
-        } catch (NumberFormatException e) {
-            // If the user didn't enter a valid number, redirect back to the homepage
-            response.sendRedirect("homepage.jsp");
+        if (quiz.getSinglePageQuestions() && quiz.getQuestions().size() > 1) {
+            request.getRequestDispatcher("/Quiz/singlePageQuiz.jsp").forward(request, response);
+        } else {
+            request.getSession().setAttribute("correctCounter", 0);
+            request.setAttribute("questionIndex", 0);
+            request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp").forward(request, response);
         }
     }
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/index.jsp").forward(req, resp);
-    }
 }
+

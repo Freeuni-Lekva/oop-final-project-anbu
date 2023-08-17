@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,7 +114,7 @@ public class QuestionDAO implements DAO<Question> {
         String query = "INSERT INTO questions (quiz_id, question_type, question_text, picture_url) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = _source.getConnection();
-             PreparedStatement ps =conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)){
+             PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, question.getQuizId());
             ps.setString(2, question.getQuestionType().getValue());
@@ -123,7 +122,7 @@ public class QuestionDAO implements DAO<Question> {
 
             // Set the picture_url only if the question type is Picture-Response
             if (question.getQuestionType() == QuestionType.PICTURE_RESPONSE) {
-                ps.setString(4,((PictureResponse) question).getPictureUrl());
+                ps.setString(4, ((PictureResponse) question).getPictureUrl());
             } else {
                 ps.setNull(4, java.sql.Types.VARCHAR);
             }
@@ -138,7 +137,7 @@ public class QuestionDAO implements DAO<Question> {
             }
             question.setQuestionId(questionId);
 
-            for(Answer answer : question.getAnswerList()){
+            for (Answer answer : question.getAnswerList()) {
                 answer.setQuestionId(questionId);
                 answerDAO.save(answer);
             }

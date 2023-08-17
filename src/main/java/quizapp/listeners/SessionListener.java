@@ -9,6 +9,7 @@ public class SessionListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         se.getSession().setAttribute("AUTHENTICATED", false);
+        se.getSession().setAttribute("takingQuiz", false);
     }
 
     @Override
