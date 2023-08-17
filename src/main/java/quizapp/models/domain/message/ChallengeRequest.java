@@ -1,18 +1,14 @@
 package quizapp.models.domain.message;
 
-import quizapp.models.domain.User;
-import quizapp.models.questions.Quiz;
-
 public class ChallengeRequest extends Message {
+    private final int quiz_id;
 
-    private String quiz_id;
-
-    public ChallengeRequest(String sender, String receiver, String quiz_id) {
+    public ChallengeRequest(String sender, String receiver, int quiz_id) {
         super(sender, receiver, MessageType.CHALLENGE);
         this.quiz_id = quiz_id;
     }
 
-    public String getQuizId() {
+    public int getQuizId() {
         return this.quiz_id;
     }
 }
