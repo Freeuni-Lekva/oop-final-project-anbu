@@ -17,35 +17,6 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public Optional<User> get(int id) {
-        String query = "select * from users where user_id = ?";
-
-        try (Connection conn = _source.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);) {
-
-            ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                User user = new User();
-
-                user.setId(id);
-                user.setUsername(rs.getString("username"));
-                user.setRegistrationDate(rs.getDate("registration_date"));
-                user.setPasswordHash(rs.getString("password_hash"));
-
-                return Optional.of(user);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public List<User> getAll() {
         String query = "select * from users";
 
@@ -58,7 +29,7 @@ public class UserDAO implements DAO<User> {
             while (rs.next()) {
                 User user = new User();
 
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getInt("user_id"));
                 user.setUsername(rs.getString("username"));
                 user.setRegistrationDate(rs.getDate("registration_date"));
                 user.setPasswordHash(rs.getString("password_hash"));
@@ -68,6 +39,7 @@ public class UserDAO implements DAO<User> {
 
         } catch (SQLException e) {
             System.out.println("Error occurred while connecting to database: UserDAO::getAll");
+            e.printStackTrace();
         }
 
         return list;
@@ -88,46 +60,6 @@ public class UserDAO implements DAO<User> {
         } catch (SQLException e) {
             System.out.println("Error occurred while connecting to database: UserDAO::save");
             e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean update(User user) {
-        String query = "update users set username = ?, password_hash = ? where user_id = ?";
-
-        try (Connection conn = _source.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPasswordHash());
-
-            ps.setInt(3, user.getId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("error occurred while connecting to database: UserDAO::update");
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean delete(User user) {
-        String query = "delete from users where user_id = ?";
-
-        try (Connection conn = _source.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setInt(1, user.getId());
-
-            ps.execute();
-
-        } catch (SQLException e) {
-            System.out.println("error occurred while connecting to database: UserDAO::delete");
             return false;
         }
 
@@ -162,38 +94,10 @@ public class UserDAO implements DAO<User> {
         return Optional.empty();
     }
 
-    public Optional<User> checkUser(String username) {
-        String query = "select * from users where username = ?";
-
-        try (Connection conn = _source.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setString(1, username);
-
-            ResultSet rs = ps.executeQuery();
-
-            User user = new User();
-
-            if (rs.next()) {
-                user.setId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setPasswordHash(rs.getString("password_hash"));
-                user.setRegistrationDate(rs.getDate("registration_date"));
-
-                return Optional.of(user);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();;
-//            System.out.println("Error occured while connecting to database");
-        }
-
-        return Optional.empty();
-    }
-
     public boolean checkCredentials(String username, String password) {
 
         User user = null;
-        Optional<User> possibleUser = checkUser(username);
+        Optional<User> possibleUser = getByUsername(username);
         if (possibleUser.isPresent()) user = possibleUser.get();
 
         if (user != null) {
@@ -202,6 +106,45 @@ public class UserDAO implements DAO<User> {
         }
 
         return false;
+    }
+
+    @Override
+    public Optional<User> get(int id) {
+        String query = "select * from users where user_id = ?";
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);) {
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+
+                user.setId(id);
+                user.setUsername(rs.getString("username"));
+                user.setRegistrationDate(rs.getDate("registration_date"));
+                user.setPasswordHash(rs.getString("password_hash"));
+
+                return Optional.of(user);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean update(User user) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean delete(User user) {
+        throw new UnsupportedOperationException();
     }
 
 }
