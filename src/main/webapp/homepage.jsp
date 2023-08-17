@@ -10,6 +10,7 @@
 <%@ page import="quizapp.models.questions.Quiz" %>
 <%@ page import="java.util.stream.Collectors" %>
 <%@ page import="quizapp.models.dao.UserDAO" %>
+<%@ page import="quizapp.settings.Endpoints" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -28,7 +29,7 @@
                 $.ajax({
                     type: "GET",
                     contentType: "text/html",
-                    url: "/secured/search",
+                    url: '<%=Endpoints.SEARCH%>',
                     data: { search_username: username },
                     success: function(response) {
                         $("#search-result").html(response);
@@ -71,7 +72,7 @@
         <ul>
             <% for (Quiz quiz : recent_own_quizzes) { %>
             <li>
-                <p><%= quiz.getQuizName() %></p>
+                <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
             </li>
             <% }; %>
         </ul>
@@ -81,7 +82,7 @@
     <ul>
         <% for (Quiz quiz : recent_quizzes) { %>
         <li>
-            <p><%= quiz.getQuizName() %></p>
+            <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
         </li>
         <% }; %>
     </ul>
@@ -90,7 +91,7 @@
     <ul>
         <% for (NoteMessage note : notes) { %>
             <li>
-                <p><%= note.getNote() %></p>
+                <p><%=note.getSender()%>: <%= note.getNote() %></p>
             </li>
         <% }; %>
     </ul>
@@ -99,7 +100,7 @@
     <ul>
         <% for (ChallengeRequest challengeRequest : challengeRequests) { %>
         <li>
-            <p><%= challengeRequest.getQuizId() %></p>
+            <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=challengeRequest.getQuizId()%>"><%=challengeRequest.getQuizId()%></a>
         </li>
         <% }; %>
     </ul>
@@ -109,7 +110,7 @@
         <% for (String friend : friendList) { %>
         <li>
             <a href="/secured/user?username=<%= friend %>"><%= friend %></a>
-            <form action="/secured/removefriend" method="post">
+            <form action="<%=Endpoints.REMOVE_FRIEND%>" method="post">
                 <input type="hidden" name="friendToRemove" value="<%= friend %>">
                 <button type="submit">Remove</button>
             </form>
@@ -122,11 +123,11 @@
         <% for (FriendRequest fr : friendRequests) { %>
             <li>
                 <a href="/secured/user?username=<%= fr.getSender() %>"><%= fr.getSender() %></a>
-                <form action="/secured/addFriend" method="post">
+                <form action="<%=Endpoints.ADD_FRIEND%>" method="post">
                     <input type="hidden" name="sender" value="<%= fr.getSender() %>">
                     <button type="submit">Accept</button>
                 </form>
-                <form action="/secured/rejectfriendrequest" method="post">
+                <form action="<%=Endpoints.REJECT_FRIEND_REQUEST%>" method="post">
                     <input type="hidden" name="sender" value="<%= fr.getSender() %>">
                     <button type="submit">Reject</button>
                 </form>
@@ -134,7 +135,7 @@
         <% }; %>
     </ul>
 
-    <form action="/auth/logout" method="post">
+    <form action="<%=Endpoints.LOGOUT%>" method="post">
         <button type="submit">Logout</button>
     </form>
 </body>
