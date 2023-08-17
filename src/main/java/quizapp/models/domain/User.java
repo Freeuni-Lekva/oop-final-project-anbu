@@ -3,10 +3,10 @@ package quizapp.models.domain;
 import java.util.Date;
 
 public class User {
-    public int id;
-    public String username;
-    public String passwordHash;
-    public boolean isAdmin;
+    private int id;
+    private String username;
+    private String passwordHash;
+    private boolean isAdmin;
 
     public boolean isAdmin() {
         return isAdmin;
