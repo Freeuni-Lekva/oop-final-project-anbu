@@ -5,13 +5,12 @@
 <%@ page import="quizapp.managers.FriendManager" %>
 <%@ page import="quizapp.models.domain.message.FriendRequest" %>
 <%@ page import="quizapp.managers.ChallengeManager" %>
-<%@ page import="quizapp.models.domain.message.ChallengeRequest" %><%--
-  Created by IntelliJ IDEA.
-  User: b3tameche
-  Date: 8/6/23
-  Time: 7:51 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="quizapp.models.domain.message.ChallengeRequest" %>
+<%@ page import="quizapp.models.dao.QuizDAO" %>
+<%@ page import="quizapp.models.questions.Quiz" %>
+<%@ page import="java.util.stream.Collectors" %>
+<%@ page import="quizapp.models.dao.UserDAO" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <%
@@ -20,6 +19,24 @@
 %>
 <head>
     <title>Welcome <%= username %></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#search-btn").click(function () {
+                const username = $("#search-input").val();
+
+                $.ajax({
+                    type: "GET",
+                    contentType: "text/html",
+                    url: "/secured/search",
+                    data: { search_username: username },
+                    success: function(response) {
+                        $("#search-result").html(response);
+                    }
+                })
+            })
+        })
+    </script>
 </head>
 <body>
     <%
@@ -32,7 +49,42 @@
 
         ChallengeManager challengeManager = (ChallengeManager) request.getServletContext().getAttribute("challengeManager");
         List<ChallengeRequest> challengeRequests = challengeManager.getChallengeRequests(username);
+
+        QuizDAO quizDao = (QuizDAO) request.getServletContext().getAttribute("quizDao");
+        List<Quiz> quizzes = quizDao.getAll();
+        List<Quiz> recent_quizzes = quizzes.stream().limit(5).collect(Collectors.toList());
+
+        UserDAO userDao = (UserDAO) request.getServletContext().getAttribute("userDao");
+
+        List<Quiz> own_quizzes = quizDao.getAllByCreator(currentUser.getId());
+        List<Quiz> recent_own_quizzes = own_quizzes.stream().limit(5).collect(Collectors.toList());
     %>
+
+    <div>
+        <input type="text" id="search-input" placeholder="Username">
+        <button id="search-btn">Search</button>
+        <div id="search-result"></div>
+    </div>
+
+    <% if (!own_quizzes.isEmpty()) { %>
+        <h2>Own quizzes:</h2><br>
+        <ul>
+            <% for (Quiz quiz : recent_own_quizzes) { %>
+            <li>
+                <p><%= quiz.getQuizName() %></p>
+            </li>
+            <% }; %>
+        </ul>
+    <% } %>
+
+    <h2>Recently created quizzes:</h2><br>
+    <ul>
+        <% for (Quiz quiz : recent_quizzes) { %>
+        <li>
+            <p><%= quiz.getQuizName() %></p>
+        </li>
+        <% }; %>
+    </ul>
 
     <h2>Notes:</h2><br>
     <ul>
@@ -56,8 +108,8 @@
     <ul>
         <% for (String friend : friendList) { %>
         <li>
-            <p><%= friend %></p>
-            <form action="/removefriend" method="post">
+            <a href="/secured/user?username=<%= friend %>"><%= friend %></a>
+            <form action="/secured/removefriend" method="post">
                 <input type="hidden" name="friendToRemove" value="<%= friend %>">
                 <button type="submit">Remove</button>
             </form>
@@ -69,16 +121,16 @@
     <ul>
         <% for (FriendRequest fr : friendRequests) { %>
             <li>
-                <p><%= fr.getSender() %></p>
+                <a href="/secured/user?username=<%= fr.getSender() %>"><%= fr.getSender() %></a>
+                <form action="/secured/addFriend" method="post">
+                    <input type="hidden" name="sender" value="<%= fr.getSender() %>">
+                    <button type="submit">Accept</button>
+                </form>
+                <form action="/secured/rejectfriendrequest" method="post">
+                    <input type="hidden" name="sender" value="<%= fr.getSender() %>">
+                    <button type="submit">Reject</button>
+                </form>
             </li>
-            <form action="/addfriend" method="post">
-                <input type="hidden" name="sender" value="<%= fr.getSender() %>">
-                <button type="submit">Accept</button>
-            </form>
-            <form action="/rejectfriendrequest" method="post">
-                <input type="hidden" name="sender" value="<%= fr.getSender() %>">
-                <button type="submit">Reject</button>
-            </form>
         <% }; %>
     </ul>
 
