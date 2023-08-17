@@ -1,6 +1,5 @@
 package quizapp.search;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,14 +7,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.models.dao.UserDAO;
 import quizapp.models.domain.User;
+import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(name = "searchServlet", value = "/secured/search")
+@WebServlet(name = "searchServlet", value = Endpoints.SEARCH)
 public class searchServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String search_username = req.getParameter("search_username");
 
         UserDAO userDao = (UserDAO) req.getServletContext().getAttribute("userDao");
