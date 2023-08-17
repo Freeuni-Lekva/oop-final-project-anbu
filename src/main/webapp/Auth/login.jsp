@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: atsin21
-  Date: 8/3/23
-  Time: 12:30 AM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="quizapp.settings.Endpoints" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,7 +6,7 @@
 </head>
 <body>
     <h1>Login page</h1>
-    <p>Plaase log in</p>
+    <p>Please log in</p>
 
     <%
         Object invalidCredentials = request.getAttribute("invalidCredentials");
@@ -25,7 +19,7 @@
         <p style="color: red">invalid credentials</p>
     <% }; %>
 
-    <form action="/auth/login" method="post">
+    <form action="<%=Endpoints.LOGIN%>" method="post">
         <label for="userinput"></label>
         <input type="text" id="userinput" name="username">
 
@@ -34,6 +28,6 @@
         <button type="submit">Login</button>
     </form>
 
-    <a href="register">Create New Account</a>
+    <a href="<%=Endpoints.REGISTER%>">Create New Account</a>
 </body>
 </html>
