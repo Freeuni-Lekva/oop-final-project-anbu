@@ -28,19 +28,6 @@ public class MessageServlet extends HttpServlet {
             throw new RuntimeException("no message type was provided");
         }
 
-//        HttpSession session = req.getSession(false);
-//        if (session == null || !(boolean) session.getAttribute("AUTHENTICATED")) {
-//            resp.getWriter().print("you are not authenticated");
-//            return;
-//        }
-
-//        boolean isAuthenticated = (boolean) session.getAttribute("AUTHENTICATED");
-//
-//        if (!isAuthenticated) {
-//            resp.getWriter().print("you are not authenticated");
-//            return;
-//        }
-
         switch (messageType) {
 
             case FRIEND: {
