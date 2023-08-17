@@ -24,7 +24,7 @@ public class QuizDAO implements DAO<Quiz> {
 
     @Override
     public Optional<Quiz> get(int id) {
-        String query = "select * from quizzes where quiz_id = ?";
+        String query = "select * from quizzes where quiz_id = ? order by creation_date desc";
         List<Question> list = new ArrayList<>();
 
         try (Connection conn = _source.getConnection();
@@ -70,7 +70,7 @@ public class QuizDAO implements DAO<Quiz> {
     }
 
     public List<Quiz> getAllByCreator(int creatorId) {
-        String query = "select * from quizzes where creator_id = ?";
+        String query = "select * from quizzes where creator_id = ? order by creation_date desc";
         List<Quiz> list = new ArrayList<>();
 
         try (Connection conn = _source.getConnection();
