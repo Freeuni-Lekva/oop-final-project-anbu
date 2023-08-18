@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.models.dao.UserDAO;
 import quizapp.models.domain.User;
+import quizapp.settings.Endpoints;
+import quizapp.settings.JSP;
 
 import java.io.IOException;
 
-@WebServlet(name = "loginServlet", value = "/auth/login")
+@WebServlet(name = "loginServlet", value = Endpoints.LOGIN)
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +29,10 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             session.setAttribute("AUTHENTICATED", true);
             
-            resp.sendRedirect("/secured/homepage");
+            resp.sendRedirect(Endpoints.HOMEPAGE);
         } else {
             req.setAttribute("invalidCredentials", true);
-            req.getRequestDispatcher("/Auth/login.jsp").forward(req, resp);
+            req.getRequestDispatcher(JSP.LOGIN).forward(req, resp);
         }
     }
 
@@ -41,10 +43,10 @@ public class LoginServlet extends HttpServlet {
         boolean isAuthenticated = (boolean) session.getAttribute("AUTHENTICATED");
 
         if (isAuthenticated) {
-            resp.sendRedirect("/secured/homepage");
+            resp.sendRedirect(Endpoints.HOMEPAGE);
             return;
         }
 
-        req.getRequestDispatcher("/Auth/login.jsp").forward(req, resp);
+        req.getRequestDispatcher(JSP.LOGIN).forward(req, resp);
     }
 }

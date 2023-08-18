@@ -52,7 +52,7 @@ public class ChallengeManager {
             while(rs.next()) {
                 String sender = rs.getString("sender");
                 String receiver = username;
-                String quiz_id = rs.getString("quiz_id");
+                int quiz_id = rs.getInt("quiz_id");
 
                 ChallengeRequest chr = new ChallengeRequest(sender, receiver, quiz_id);
 

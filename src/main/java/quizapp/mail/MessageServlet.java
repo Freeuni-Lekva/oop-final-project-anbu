@@ -5,18 +5,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import quizapp.managers.ChallengeManager;
 import quizapp.managers.FriendManager;
 import quizapp.managers.NoteManager;
-import quizapp.models.domain.User;
-import quizapp.models.domain.message.Message;
 import quizapp.models.domain.message.MessageType;
-import quizapp.models.domain.message.NoteMessage;
+import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
-@WebServlet(name = "messageServlet", value = "/secured/message")
+@WebServlet(name = "messageServlet", value = Endpoints.MESSAGE)
 public class MessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

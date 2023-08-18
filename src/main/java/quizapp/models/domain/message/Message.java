@@ -1,9 +1,5 @@
 package quizapp.models.domain.message;
 
-import quizapp.models.domain.User;
-import quizapp.models.questions.Quiz;
-
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public abstract class Message {

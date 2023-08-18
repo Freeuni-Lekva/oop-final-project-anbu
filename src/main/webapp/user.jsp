@@ -1,6 +1,7 @@
 <%@ page import="quizapp.managers.FriendManager" %>
 <%@ page import="java.util.List" %>
 <%@ page import="quizapp.models.domain.User" %>
+<%@ page import="quizapp.settings.Endpoints" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -26,7 +27,7 @@
             $("#add-friend-btn").click(function () {
                 $.ajax({
                     type: "POST",
-                    url: "/secured/message",
+                    url: '<%=Endpoints.MESSAGE%>',
                     data: {
                         sender: '<%=current_username%>',
                         receiver: '<%=username%>',
@@ -41,7 +42,7 @@
             $("#accept-friend-request").click(function () {
                 $.ajax({
                     type: "POST",
-                    url: "/secured/addFriend",
+                    url: '<%=Endpoints.ADD_FRIEND%>',
                     data: {
                         sender: '<%=username%>'
                     },
@@ -54,12 +55,28 @@
             $("#reject-friend-request").click(function () {
                 $.ajax({
                     type: "POST",
-                    url: "/secured/rejectfriendrequest",
+                    url: '<%=Endpoints.REJECT_FRIEND_REQUEST%>',
                     data: {
                         sender: '<%=username%>'
                     },
                     success: function(response) {
                         location.reload()
+                    }
+                })
+            })
+
+            $("#send-note-btn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '<%=Endpoints.MESSAGE%>',
+                    data: {
+                        sender: '<%=current_username%>',
+                        receiver: '<%=username%>',
+                        messageType: 'note',
+                        note: $('#note-input').val()
+                    },
+                    success: function(response) {
+                        $('#note-input').val('');
                     }
                 })
             })
@@ -81,6 +98,8 @@
         <% } else { %>
             <p>You are already friends.</p>
         <% } %>
+
+        <input id="note-input" type="text" placeholder="Note Message"><button id="send-note-btn">Send Message</button>
     <% } %>
 </body>
 </html>

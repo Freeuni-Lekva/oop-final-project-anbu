@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public class AuthFilter implements Filter {
             boolean isAuthenticated = (boolean) session.getAttribute("AUTHENTICATED");
 
             if (!isAuthenticated) {
-                resp.sendRedirect("/auth/login");
+                resp.sendRedirect(Endpoints.LOGIN);
                 return;
             }
         }

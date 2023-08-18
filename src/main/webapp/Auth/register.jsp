@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: atsin21
-  Date: 8/3/23
-  Time: 9:00 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="quizapp.settings.Endpoints" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,7 +9,7 @@
 
     <p>Please enter username and password to register</p>
 
-    <form action="/auth/register" method="post">
+    <form action="<%=Endpoints.REGISTER%>" method="post">
         <label for="userinput"></label>
         <input type="text" id="userinput" name="username" required><br><br>
 
@@ -29,6 +23,6 @@
         <button type="submit">Register</button>
     </form>
 
-    <a href="login">Already have an account? Login</a>
+    <a href="<%=Endpoints.LOGIN%>">Already have an account? Login</a>
 </body>
 </html>
