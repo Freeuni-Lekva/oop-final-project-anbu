@@ -3,6 +3,7 @@
 <%@ page import="quizapp.models.questions.QuestionType" %>
 <%@ page import="quizapp.models.dao.QuizDAO" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
+<%@ page import="quizapp.settings.Endpoints" %>
 <%
     boolean takingQuiz = (boolean) request.getSession().getAttribute("takingQuiz");
     if(!takingQuiz){return;}
@@ -12,8 +13,8 @@
     long currentTimeMillis = System.currentTimeMillis();
     long timeSpendSeconds = (currentTimeMillis - startTimeMillis) / 1000;
     long timeLeftSeconds = quiz.getTimeLimitMinutes()*60 - timeSpendSeconds;
-    String minutes = timeLeftSeconds/60 < 10 ? "0" + timeLeftSeconds/60:timeLeftSeconds/60;
-    String seconds = timeLeftSeconds%60 < 10 ? "0" + timeLeftSeconds%60:timeLeftSeconds%60;
+    String minutes = timeLeftSeconds/60 < 10 ? "0" + timeLeftSeconds/60:"" + timeLeftSeconds/60;
+    String seconds = timeLeftSeconds%60 < 10 ? "0" + timeLeftSeconds%60:"" + timeLeftSeconds%60;
 %>
 <!DOCTYPE html>
 <html>
@@ -28,10 +29,6 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    .multi-page-container{
-        width: 50%;
-        max-width: 50%;
     }
     .single-page-container{
         width: 100%;
@@ -173,7 +170,7 @@
 <body>
         <h1 class = "centered"><%= quiz.getQuizName()%></h1>
         <div class="centered">
-            <form method = "post" action = "/secured/gradeQuizServlet" id = "quizForm">
+            <form method = "post" action = "<%= Endpoints.GRADE_QUIZ%>"  id = "quizForm">
             <% for (int i = 0; i < questions.size(); i++){ %>
             <div class = "flash-card single-page-container">
                      <%= questions.get(i).renderQuestionHTML(i+1) %>

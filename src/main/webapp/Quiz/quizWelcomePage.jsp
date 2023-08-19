@@ -5,6 +5,7 @@
 <%@ page import="quizapp.models.dao.UserDAO" %>
 <%@ page import="quizapp.models.domain.User" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
+<%@ page import="quizapp.settings.Endpoints" %>
 <%
     int quizId = Integer.valueOf(request.getParameter("quizId"));
     QuizDAO quizDAO = new QuizDAO();
@@ -94,9 +95,9 @@
     }
 
     .left-div, .center-div, .right-div {
-        width: 30%; /* Adjust width as needed */
-        display: inline-block; /* Display divs side by side */
-        vertical-align: top; /* Align divs at the top */
+        width: 30%;
+        display: inline-block;
+        vertical-align: top;
         border: 1px solid #ccc;
         padding: 10px;
         box-sizing: border-box;
@@ -137,7 +138,7 @@
             <p><b>Date:</b> <%= quiz.getFormattedCreationDate()%></p>
             <p><b>About:</b> <%= quiz.getDescription()%></p>
             <p><b>Time Limit:</b> <%= quiz.getTimeLimitMinutes()%> minutes</p>
-            <form method = "post" action = "/secured/takeQuizServlet">
+            <form method = "post" action = "<%= Endpoints.TAKE_QUIZ%>">
                 <button action="post" name>Start Quiz</button>
             </form>
         </div>

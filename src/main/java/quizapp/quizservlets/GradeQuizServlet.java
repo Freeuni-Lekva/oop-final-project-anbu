@@ -1,4 +1,4 @@
-package quizapp.auth;
+package quizapp.quizservlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,13 +8,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.models.questions.Question;
 import quizapp.models.questions.Quiz;
+import quizapp.settings.Endpoints;
+import quizapp.settings.JSP;
 import utils.MyLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-@WebServlet(name = "gradeQuizServlet", value = "/secured/gradeQuizServlet")
+@WebServlet(name = "gradeQuizServlet", value = Endpoints.GRADE_QUIZ)
 public class GradeQuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -34,7 +36,7 @@ public class GradeQuizServlet extends HttpServlet {
                 //if user somehow cracked frontend
                 MyLogger.info("oops");
                 session.setAttribute("correctCounter", 0);
-                request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
+                request.getRequestDispatcher(JSP.QUIZ_RESULTS_PAGE).forward(request, response);
                 return;
             }
             timeSpentSeconds = Math.min(quiz.getTimeLimitMinutes()*60,timeSpentSeconds); //ignore couple seconds errors
@@ -74,7 +76,7 @@ public class GradeQuizServlet extends HttpServlet {
             index++;
             if (index < quiz.getQuestions().size() && timeSpentSeconds < timeLimitSeconds) {
                 request.setAttribute("questionIndex", index);
-                request.getRequestDispatcher("/Quiz/multiPageQuiz.jsp").forward(request, response);
+                request.getRequestDispatcher(JSP.MULTI_PAGE_QUIZ).forward(request, response);
                 return;
             }
         }
@@ -85,7 +87,7 @@ public class GradeQuizServlet extends HttpServlet {
         session.setAttribute("answers", answers);
         session.setAttribute("correctCounter", correctCounter);
 
-        request.getRequestDispatcher("/Quiz/resultsPage.jsp").forward(request, response);
+        request.getRequestDispatcher(JSP.QUIZ_RESULTS_PAGE).forward(request, response);
 
     }
 }

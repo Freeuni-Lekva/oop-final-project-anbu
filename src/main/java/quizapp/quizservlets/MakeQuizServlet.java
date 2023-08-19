@@ -1,4 +1,4 @@
-package quizapp.auth;
+package quizapp.quizservlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,11 +9,13 @@ import jakarta.servlet.http.HttpSession;
 import quizapp.models.dao.QuizDAO;
 import quizapp.models.domain.User;
 import quizapp.models.questions.*;
+import quizapp.settings.Endpoints;
+import quizapp.settings.JSP;
 import utils.MyLogger;
 
 import java.io.IOException;
 
-@WebServlet(name = "makeQuiz", value = "/secured/makeQuiz")
+@WebServlet(name = "makeQuiz", value = Endpoints.MAKE_QUIZ)
 public class MakeQuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,7 +60,7 @@ public class MakeQuizServlet extends HttpServlet {
         QuizDAO quizDAO = new QuizDAO();
         quizDAO.save(quiz);
 
-        request.getRequestDispatcher("/Quiz/quizWelcomePage.jsp?quizId=" + quiz.getQuizId()).forward(request, response);
+        request.getRequestDispatcher(JSP.QUIZ_WELCOME_PAGE + "?quizId=" + quiz.getQuizId()).forward(request, response);
     }
 
 
@@ -125,7 +127,7 @@ public class MakeQuizServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/Quiz/makeQuizPage.jsp").forward(request, response);
+        request.getRequestDispatcher(JSP.MAKE_QUIZ_PAGE).forward(request, response);
     }
 
 }
