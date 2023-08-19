@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* NoteManager class handling note message related logic, including inserting and retrieving note messages from database */
 public class NoteManager {
 
     private final DatabaseConnectionSource _source;
@@ -18,6 +19,7 @@ public class NoteManager {
         this._source = DatabaseConnectionSource.getInstance();
     }
 
+    /* adds [note] in notes table from [sender] to [receiver] */
     public void sendNote(String sender, String receiver, String note) {
         String sql = "insert into notes(sender, receiver, note) values (?, ?, ?)";
 
@@ -34,6 +36,7 @@ public class NoteManager {
         }
     }
 
+    /* get all notes sent to user with given [username] */
     public List<NoteMessage> getNotesByUsername(String username) {
         String sql = "select * from notes where receiver = ? order by send_date";
 

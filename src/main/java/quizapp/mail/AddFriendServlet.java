@@ -12,6 +12,7 @@ import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
+/* addFriendServlet, accepting only POST requests and handles adding friend functionality */
 @WebServlet(name = "addFriendServlet", value = Endpoints.ADD_FRIEND)
 public class AddFriendServlet extends HttpServlet {
     @Override

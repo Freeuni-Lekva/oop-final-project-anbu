@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* ChallengeManager class, handles Challenge related stuff including storing and retrieving challenges from database */
 public class ChallengeManager {
     private final DatabaseConnectionSource _source;
 
@@ -18,6 +19,7 @@ public class ChallengeManager {
         this._source = DatabaseConnectionSource.getInstance();
     }
 
+    /* inserts challenge entry in database */
     public void sendChallenge(String sender, String receiver, int quiz_id) {
         String sql = "insert into challenge_requests(sender, receiver, quiz_id) values (?,?,?)";
 
@@ -36,6 +38,7 @@ public class ChallengeManager {
         }
     }
 
+    /* retrieves challenge requests sent to a particular user identified with given [username] */
     public List<ChallengeRequest> getChallengeRequests(String username) {
         String sql = "select * from challenge_requests where receiver = ? order by request_date";
 

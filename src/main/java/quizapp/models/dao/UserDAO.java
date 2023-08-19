@@ -66,6 +66,7 @@ public class UserDAO implements DAO<User> {
         return true;
     }
 
+    /* gets User Optional from database, identified by [username] */
     public Optional<User> getByUsername(String username) {
         String query = "select * from users where username = ?";
 
@@ -94,6 +95,7 @@ public class UserDAO implements DAO<User> {
         return Optional.empty();
     }
 
+    /* checks if given [username] and [password] matches any user in database */
     public boolean checkCredentials(String username, String password) {
 
         User user = null;
@@ -108,6 +110,7 @@ public class UserDAO implements DAO<User> {
         return false;
     }
 
+    /* gets User Optional from database, identified by [id] */
     @Override
     public Optional<User> get(int id) {
         String query = "select * from users where user_id = ?";

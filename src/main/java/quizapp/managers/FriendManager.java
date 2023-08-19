@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* FriendManager class, handles friendship mechanisms */
 public class FriendManager {
 
     private final DatabaseConnectionSource _source;
@@ -19,6 +20,7 @@ public class FriendManager {
         this._source = DatabaseConnectionSource.getInstance();
     }
 
+    /* inserts friend request into database from [sender] to [receiver] */
     public void makeFriendRequest(String sender, String receiver) {
         String sql = "insert into friend_requests(sender, receiver) values (?, ?);";
 
@@ -35,6 +37,7 @@ public class FriendManager {
         }
     }
 
+    /* removes friend request entry issued by [sender] to [receiver] from database */
     public void removeFriendRequest(String sender, String receiver) {
         String sql = "delete from friend_requests where sender = ? and receiver = ?";
 
@@ -52,6 +55,8 @@ public class FriendManager {
 
     }
 
+    /* in case user accepts friend request, function creates entry in friends table,
+    *  representing the friendship between [username_1] and [username_2] */
     public void makeFriends(String username_1, String username_2) {
         String sql = "insert into friends(username_1, username_2) values (?, ?)";
 
@@ -70,6 +75,7 @@ public class FriendManager {
         }
     }
 
+    /* removes friendship between [username_1] and [username_2] from database */
     public void removeFriends(String username_1, String username_2) {
         String sql = "delete from friends where (username_1 = ? and username_2 = ?) or (username_1 = ? and username_2 = ?)";
 
@@ -90,6 +96,7 @@ public class FriendManager {
         }
     }
 
+    /* retrieves all friend request sent to [username] from database */
     public List<FriendRequest> getFriendRequests(String username) {
         String sql = "select * from friend_requests where receiver = ? order by request_date";
 
@@ -118,6 +125,7 @@ public class FriendManager {
         return requests;
     }
 
+    /* retrieves all friends of [username] from database */
     public List<String> getFriends(String username) {
         String sql = "select * from friends where username_1 = ? or username_2 = ?";
 
@@ -150,6 +158,7 @@ public class FriendManager {
         return friendList;
     }
 
+    /* checks if friend request entry is present in database from [from] to [to] */
     public boolean friendRequestIsSent(String from, String to) {
         String sql = "select * from friend_requests where sender = ? and receiver = ?";
 
@@ -170,6 +179,7 @@ public class FriendManager {
         return false;
     }
 
+    /* checks if [username_1] and [username_2] are friends (i.e. corresponding entry exists in friends table) */
     public boolean areFriends(String username_1, String username_2) {
         String sql = "select * from friends where (username_1 = ? and username_2 = ?) or (username_1 = ? and username_2 = ?)";
 
