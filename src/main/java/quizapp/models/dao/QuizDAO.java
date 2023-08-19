@@ -5,10 +5,7 @@ import quizapp.models.questions.Quiz;
 import utils.DatabaseConnectionSource;
 import utils.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,8 +101,10 @@ public class QuizDAO implements DAO<Quiz> {
         boolean singlePageQuestions = rs.getBoolean("single_page_questions");
         boolean immediateCorrection = rs.getBoolean("immediate_correction");
         int timeLimitMinutes = rs.getInt("time_limit_minutes");
+        int timesTaken = rs.getInt("times_taken");
         Quiz quiz = new Quiz(quizId, creatorId, quizName, description, creationDate,randomizedOrder,singlePageQuestions,immediateCorrection,timeLimitMinutes);
         quiz.addAllQuestions(questions);
+        quiz.setTimesTaken(timesTaken);
         return quiz;
     }
 
@@ -143,7 +142,29 @@ public class QuizDAO implements DAO<Quiz> {
             e.printStackTrace();
             return false;
         }
+    }
 
+    /* returns the most popular quizzes (ordered by times taken) */
+    public List<Quiz> getPopularQuizzes() {
+        String sql = "select * from quizzes order by times_taken desc";
+
+        List<Quiz> quizzes = new ArrayList<>();
+
+        try (Connection conn = _source.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()) {
+                Quiz quiz = getQuizFromResultSet(rs);
+                quizzes.add(quiz);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return quizzes;
     }
 
     @Override
