@@ -12,6 +12,7 @@ import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
+/* rejectFriendRequestServlet, accepts only POST request, handles rejecting friend request functionality */
 @WebServlet(name = "rejectFriendRequestServlet", value = Endpoints.REJECT_FRIEND_REQUEST)
 public class RejectFriendRequestServlet extends HttpServlet {
     @Override

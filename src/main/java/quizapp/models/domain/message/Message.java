@@ -2,6 +2,7 @@ package quizapp.models.domain.message;
 
 import java.sql.Timestamp;
 
+/* Message abstract class, abstracting internal mail message */
 public abstract class Message {
     private int id;
     protected String sender;

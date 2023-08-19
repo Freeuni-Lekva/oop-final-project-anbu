@@ -12,6 +12,7 @@ import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
+/* removeFriendServlet, accepts only POST request, handles removing friend request */
 @WebServlet(name = "removeFriendServlet", value = Endpoints.REMOVE_FRIEND)
 public class RemoveFriendServlet extends HttpServlet {
     @Override

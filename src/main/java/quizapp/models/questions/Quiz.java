@@ -17,6 +17,7 @@ public class Quiz {
     private boolean singlePageQuestions;
     private boolean immediateCorrection;
     private int timeLimitMinutes;
+    private int timesTaken;
 
     public Quiz(int quizId, int creatorId, String quizName, String description, Date creationDate, boolean randomizedOrder, boolean singlePageQuestions, boolean immediateCorrection, int timeLimitMinutes) {
         this.quizId = quizId;
@@ -40,6 +41,14 @@ public class Quiz {
         this.singlePageQuestions = singlePageQuestions;
         this.immediateCorrection = immediateCorrection;
         this.timeLimitMinutes = timeLimitMinutes;
+    }
+
+    public int getTimesTaken() {
+        return timesTaken;
+    }
+
+    public void setTimesTaken(int timesTaken) {
+        this.timesTaken = timesTaken;
     }
 
     public void setQuizId(int quizId) {

@@ -9,6 +9,7 @@ import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
+/* Authwall, every request made to an endpoint matching /secured/* pattern will be filtered */
 @WebFilter("/secured/*")
 public class AuthFilter implements Filter {
     @Override

@@ -13,6 +13,7 @@ import quizapp.settings.Endpoints;
 
 import java.io.IOException;
 
+/* messageServlet, accepts only POST request, handles internal mail messages (Challenge, Note, Friend Request) */
 @WebServlet(name = "messageServlet", value = Endpoints.MESSAGE)
 public class MessageServlet extends HttpServlet {
     @Override

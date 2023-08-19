@@ -59,6 +59,8 @@
 
         List<Quiz> own_quizzes = quizDao.getAllByCreator(currentUser.getId());
         List<Quiz> recent_own_quizzes = own_quizzes.stream().limit(5).collect(Collectors.toList());
+
+        List<Quiz> popular_quizzes = quizDao.getPopularQuizzes();
     %>
 
     <div>
@@ -78,7 +80,25 @@
         </ul>
     <% } %>
 
+    <h2>Popular quizzes:</h2><br>
+    <ul>
+        <% for (Quiz quiz : popular_quizzes) { %>
+        <li>
+            <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
+        </li>
+        <% }; %>
+    </ul>
+
     <h2>Recently created quizzes:</h2><br>
+    <ul>
+        <% for (Quiz quiz : recent_quizzes) { %>
+        <li>
+            <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
+        </li>
+        <% }; %>
+    </ul>
+
+    <h2>Friend Activities:</h2><br>
     <ul>
         <% for (Quiz quiz : recent_quizzes) { %>
         <li>

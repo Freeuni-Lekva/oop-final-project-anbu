@@ -24,6 +24,7 @@ public class DatabaseConnectionSource {
         }
     }
 
+    /* returns connection source instance */
     public static DatabaseConnectionSource getInstance() {
         if (instance == null) {
             instance = new DatabaseConnectionSource();
@@ -52,7 +53,7 @@ public class DatabaseConnectionSource {
         }
     }
 
-    // retrieves sql statements as list from resource (filename)
+    // retrieves sql statements as semicolon-separated string from resource (filename)
     public static String getSql(final String resource) {
         return new BufferedReader(
                 new InputStreamReader((Objects.requireNonNull(
