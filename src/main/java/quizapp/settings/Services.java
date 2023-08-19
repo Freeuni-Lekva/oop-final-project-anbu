@@ -7,5 +7,6 @@ public class Services {
     public static final String FRIEND_MANAGER = "friendManager";
     public static final String CHALLENGE_MANAGER = "challengeManager";
     public static final String NOTE_MANAGER = "noteManager";
+    public static final String HISTORY_MANAGER = "historyManager";
 
 }

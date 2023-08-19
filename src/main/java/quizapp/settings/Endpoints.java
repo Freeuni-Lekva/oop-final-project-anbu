@@ -16,4 +16,6 @@ public class Endpoints {
     public static final String USER = "/secured/user";
 
     public static final String HOMEPAGE = "/secured/homepage";
+
+    public static final String HISTORY = "/secured/history";
 }

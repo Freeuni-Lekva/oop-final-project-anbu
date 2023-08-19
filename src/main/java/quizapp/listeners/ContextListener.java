@@ -21,6 +21,7 @@ public class ContextListener implements ServletContextListener {
         sce.getServletContext().setAttribute(Services.FRIEND_MANAGER, new FriendManager());
         sce.getServletContext().setAttribute(Services.CHALLENGE_MANAGER, new ChallengeManager());
         sce.getServletContext().setAttribute(Services.NOTE_MANAGER, new NoteManager());
+	sce.getServletContext().setAttribute(Services.HISTORY_MANAGER, new HistoryManager());
     }
 
     @Override

@@ -58,11 +58,13 @@ CREATE TABLE answers (
 -- Quiz History Table
 CREATE TABLE quiz_history (
   history_id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   user_id INT NOT NULL,
   quiz_id INT NOT NULL,
   score INT,
   completion_time INT,
   completion_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (username) REFERENCES users(username),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)
 );
