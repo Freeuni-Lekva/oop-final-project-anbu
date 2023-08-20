@@ -7,7 +7,7 @@ import quizapp.models.questions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DaoTest {
+public class QuizDaoTest {
     private static UserDAO userDAO;
     private static QuizDAO quizDAO;
     @BeforeAll

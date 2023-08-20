@@ -6,6 +6,7 @@
 <%@ page import="quizapp.models.domain.User" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
 <%@ page import="quizapp.settings.Endpoints" %>
+<%@ page import="quizapp.settings.JSP" %>
 <%
     int quizId = Integer.valueOf(request.getParameter("quizId"));
     QuizDAO quizDAO = new QuizDAO();
@@ -15,7 +16,7 @@
     request.getSession().setAttribute("takingQuiz", false);
     if (quiz == null) {
         request.setAttribute("message", "The requested resource was not found.");
-        request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+        request.getRequestDispatcher("<%= JSP.ERROR_PAGE%>").forward(request, response);
         return;
     }
     User authorUser = userDAO.get(quiz.getCreatorId()).orElse(null);
