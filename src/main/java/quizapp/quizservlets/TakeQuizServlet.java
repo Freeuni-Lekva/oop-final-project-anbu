@@ -10,6 +10,7 @@ import quizapp.models.questions.Question;
 import quizapp.models.questions.Quiz;
 import quizapp.settings.Endpoints;
 import quizapp.settings.JSP;
+import utils.MyLogger;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -41,6 +42,11 @@ public class TakeQuizServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getParameter("quizId") == null) {
+            request.setAttribute("error_message","error occurred while getting quiz");
+            request.getRequestDispatcher(JSP.ERROR_PAGE).forward(request, response);
+            return;
+        }
         request.getRequestDispatcher(JSP.QUIZ_WELCOME_PAGE).forward(request, response);
     }
 }

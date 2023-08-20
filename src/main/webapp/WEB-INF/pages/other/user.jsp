@@ -85,21 +85,76 @@
     </script>
 </head>
 <body>
-    <% if (!isCurrentUser) { %>
-        <% if (!areFriends) { %>
-            <% if (friendRequestIsSent) { %>
-                <p>Friend request is already sent.</p>
-            <% } else if (friendRequestIsReceived) { %>
-                <button id="accept-friend-request">Accept</button>
-                <button id="reject-friend-request">Reject</button>
+    <div class = "flash-card">
+        <h1>username: <%=username%></h1>
+        <% if (!isCurrentUser) { %>
+            <% if (!areFriends) { %>
+                <% if (friendRequestIsSent) { %>
+                    <p>Friend request is already sent.</p>
+                <% } else if (friendRequestIsReceived) { %>
+                    <button id="accept-friend-request">Accept</button>
+                    <button id="reject-friend-request">Reject</button>
+                <% } else { %>
+                    <button id="add-friend-btn">Add Friend</button>
+                <% } %>
             <% } else { %>
-                <button id="add-friend-btn">Add Friend</button>
+                <p>You are already friends.</p>
             <% } %>
-        <% } else { %>
-            <p>You are already friends.</p>
-        <% } %>
 
-        <input id="note-input" type="text" placeholder="Note Message"><button id="send-note-btn">Send Message</button>
-    <% } %>
+            <input id="note-input" type="text" placeholder="Note Message"><button id="send-note-btn">Send Message</button>
+        <% } %>
+    </div>
+    <div class="divider"></div>
+    <form action="<%=Endpoints.HOMEPAGE%>" method="get">
+        <button type="submit">go back to homepage</button>
+    </form>
+
+     <style>
+        body{
+            font-family: Sans-Serif;
+            position: relative;
+        }
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #3e73b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+         .flash-card{
+                background-color: #f1f1f1;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+        button:hover {
+            background-color: #2a43b0;
+        }
+
+        input[type="text"]{
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 300px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3e73b3;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+        }
+
+        input[type="text"]:hover{
+            border-color: #2a43b0;
+        }
+
+        .divider {
+           margin-top: 20px;
+           padding: 10px;
+        }
+     </style>
 </body>
 </html>

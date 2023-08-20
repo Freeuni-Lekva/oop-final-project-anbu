@@ -98,7 +98,7 @@
                     <ul>
                         <% for (ChallengeRequest challengeRequest : challengeRequests) { %>
                         <li>
-                            <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=challengeRequest.getQuizId()%>"><%=challengeRequest.getQuizId()%></a>
+                            <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=challengeRequest.getQuizId()%>"><%=challengeRequest.getSender()%>&#39;s challenge on quiz with id: <%=challengeRequest.getQuizId()%></a>
                         </li>
                         <% }; %>
                     </ul>
@@ -112,11 +112,13 @@
                     <ul>
                         <% for (String friend : friendList) { %>
                         <li>
-                            <a href="/secured/user?username=<%= friend %>"><%= friend %></a>
-                            <form action="<%=Endpoints.REMOVE_FRIEND%>" method="post">
-                                <input type="hidden" name="friendToRemove" value="<%= friend %>">
-                                <button type="submit">Remove</button>
-                            </form>
+                            <div class = "single-line-container friend-list">
+                                <a href="/secured/user?username=<%= friend %>"><%= friend %></a>
+                                <form action="<%=Endpoints.REMOVE_FRIEND%>" method="post">
+                                    <input type="hidden" name="friendToRemove" value="<%= friend %>">
+                                    <button type="submit">Remove</button>
+                                </form>
+                            </div>
                         </li>
                         <% }; %>
                     </ul>
@@ -130,15 +132,17 @@
                     <ul>
                         <% for (FriendRequest fr : friendRequests) { %>
                             <li>
-                                <a href="/secured/user?username=<%= fr.getSender() %>"><%= fr.getSender() %></a>
-                                <form action="<%=Endpoints.ADD_FRIEND%>" method="post">
-                                    <input type="hidden" name="sender" value="<%= fr.getSender() %>">
-                                    <button type="submit">Accept</button>
-                                </form>
-                                <form action="<%=Endpoints.REJECT_FRIEND_REQUEST%>" method="post">
-                                    <input type="hidden" name="sender" value="<%= fr.getSender() %>">
-                                    <button type="submit">Reject</button>
-                                </form>
+                                <div class = "single-line-container friend-list">
+                                    <a href="/secured/user?username=<%= fr.getSender() %>"><%= fr.getSender() %></a>
+                                    <form action="<%=Endpoints.ADD_FRIEND%>" method="post">
+                                        <input type="hidden" name="sender" value="<%= fr.getSender() %>">
+                                        <button type="submit">Accept</button>
+                                    </form>
+                                    <form action="<%=Endpoints.REJECT_FRIEND_REQUEST%>" method="post">
+                                        <input type="hidden" name="sender" value="<%= fr.getSender() %>">
+                                        <button type="submit">Reject</button>
+                                    </form>
+                                </div>
                             </li>
                         <% }; %>
                     </ul>
@@ -314,6 +318,39 @@
             top: 0;
             right: 0;
          }
+        ul {
+            list-style-type: square;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        li::marker {
+            color: #3e73b3;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        li {
+            font-size: 1rem;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+        li a, p{
+            color: #3e73b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        li a:hover{
+            text-decoration: underline;
+            color: #2a43b0;
+        }
+        .single-line-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .friend-list a{
+            font-size: 1.2rem;
+        }
     </style>
 </body>
 </html>
