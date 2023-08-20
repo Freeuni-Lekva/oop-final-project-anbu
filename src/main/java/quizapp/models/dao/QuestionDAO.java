@@ -62,7 +62,7 @@ public class QuestionDAO implements DAO<Question> {
             }
 
         } catch (SQLException e) {
-            MyLogger.error("Error occurred while connecting to database: UserDAO::getAll");
+            MyLogger.error(e.getMessage());
         }
         if (list.size() == 0) {
             throw new Exception("questions for quiz: " + quizId + " does not exist");
@@ -105,7 +105,24 @@ public class QuestionDAO implements DAO<Question> {
 
     @Override
     public List<Question> getAll() {
-        throw new UnsupportedOperationException("This method is not implemented.");
+        String query = "select * from questions";
+        List<Question> list = new ArrayList<>();
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+        ) {
+            ResultSet rs = ps.executeQuery(query);
+
+            while (rs.next()) {
+                list.add(getQuestionFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            MyLogger.error(e.getMessage());
+        } catch (Exception e) {
+            MyLogger.error(e.getMessage(), e);
+        }
+        return list;
     }
 
 
@@ -156,6 +173,17 @@ public class QuestionDAO implements DAO<Question> {
 
     @Override
     public boolean delete(Question question) {
-        throw new UnsupportedOperationException("This method is not implemented.");
+        answerDAO.deleteByQuestionID(question.getQuestionId());
+        String query = "DELETE FROM questions WHERE question_id = ?";
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, question.getQuestionId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return  true;
     }
 }

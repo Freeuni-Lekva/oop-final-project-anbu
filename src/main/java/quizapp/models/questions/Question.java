@@ -72,7 +72,9 @@ public abstract class Question {
             return false;
         }
         Question other = (Question) obj;
-        return this.questionId == other.questionId && this.questionId != 0;
+        return this.questionText.equals(other.questionText)
+                && this.questionType.equals(other.questionType)
+                && this.answerList.equals(other.answerList);
     }
 
     @Override

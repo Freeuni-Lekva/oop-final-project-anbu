@@ -9,6 +9,7 @@ public class JSP {
 
     public static final String HOMEPAGE = "/WEB-INF/pages/other/homepage.jsp";
     public static final String USER = "/WEB-INF/pages/other/user.jsp";
+    public static final String HISTORY = "/WEB-INF/pages/other/history.jsp";
     public static final String ERROR_PAGE = "/WEB-INF/pages/other/errorPage.jsp";
 
     public static final String SINGLE_PAGE_QUIZ = "/WEB-INF/pages/quiz/singlePageQuiz.jsp";

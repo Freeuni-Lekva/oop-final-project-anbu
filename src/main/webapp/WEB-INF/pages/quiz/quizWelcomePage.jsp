@@ -160,11 +160,13 @@
             <p><b>Author:</b> <%= authorUser.getUsername()%></p>
             <p><b>Date:</b> <%= quiz.getFormattedCreationDate()%></p>
             <p><b>About:</b> <%= quiz.getDescription()%></p>
+             <p><b>Number Of Questions:</b> <%= quiz.getQuestions().size()%></p>
             <p><b>Time Limit:</b> <%= quiz.getTimeLimitMinutes()%> minutes</p>
             <form method = "post" action = "<%= Endpoints.TAKE_QUIZ%>">
                 <button action="post" name>Start Quiz</button>
             </form>
         </div>
+        <%/* HISTORY TABLES NOT IMPLEMENTED YET===================================================
         <div class = "center-div">
          <p><b>top scores</b></p>
          <table>
@@ -222,6 +224,7 @@
                 </tbody>
             </table>
           </div>
+          HISTORY TABLES NOT IMPLEMENTED YET=================================================== */%>
     </div>
     <div class="divider"></div>
     <div class="single-line-container">

@@ -46,12 +46,12 @@ CREATE TABLE IF NOT EXISTS answers (
 -- Quiz History Table
 CREATE TABLE IF NOT EXISTS quiz_history (
   history_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
+  username INT NOT NULL,
   quiz_id INT NOT NULL,
   score INT,
-  completion_time INT,
+  completion_time_seconds INT,
   completion_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (username) REFERENCES users(username),
   FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id)
 );
 

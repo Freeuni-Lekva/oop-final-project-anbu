@@ -156,5 +156,25 @@ public class Quiz {
         sb.append("}");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Quiz other = (Quiz) obj;
+        return this.quizName.equals(other.quizName)
+                && this.description.equals(other.description)
+                && this.immediateCorrection == other.immediateCorrection
+                && this.singlePageQuestions == other.singlePageQuestions
+                && this.randomizedOrder == other.randomizedOrder
+                && this.timesTaken == other.timesTaken
+                && this.creatorId == other.creatorId
+                && this.timeLimitMinutes == other.timeLimitMinutes
+                && this.questions.equals(other.questions);
+    }
 }
 

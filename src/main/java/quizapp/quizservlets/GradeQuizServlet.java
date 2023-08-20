@@ -6,10 +6,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import quizapp.managers.HistoryManager;
+import quizapp.models.dao.QuizDAO;
+import quizapp.models.domain.User;
 import quizapp.models.questions.Question;
 import quizapp.models.questions.Quiz;
 import quizapp.settings.Endpoints;
 import quizapp.settings.JSP;
+import quizapp.settings.Services;
 import utils.MyLogger;
 
 import java.io.IOException;
@@ -82,8 +86,12 @@ public class GradeQuizServlet extends HttpServlet {
         }
         session.setAttribute("takingQuiz",false);
 
-
+        new QuizDAO().incrementTimesTaken(quiz);
         //if we want to save results/answers submitted answers are saved in HashMap answers
+        HistoryManager hm = new HistoryManager();
+        User user = (User) session.getAttribute("user");
+        hm.addEntry(user.getUsername(), quiz.getQuizId(),correctCounter, (int) timeSpentSeconds );
+
         session.setAttribute("answers", answers);
         session.setAttribute("correctCounter", correctCounter);
 

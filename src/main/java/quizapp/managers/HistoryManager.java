@@ -19,7 +19,7 @@ public class HistoryManager {
     }
 
     public void addEntry(String username, int quiz_id, int score, int completion_time) {
-        String sql = "insert into quiz_history(user_id, quiz_id, score, completion_time) values(?, ?, ?, ?)";
+        String sql = "insert into quiz_history(username, quiz_id, score, completion_time) values(?, ?, ?, ?)";
 
         try (Connection conn = _source.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

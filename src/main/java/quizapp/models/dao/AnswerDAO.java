@@ -75,7 +75,26 @@ public class AnswerDAO implements DAO<Answer> {
 
     @Override
     public List<Answer> getAll() {
-        throw new UnsupportedOperationException("This method is not implemented.");
+        String query = "select * from answers";
+
+        List<Answer> list = new ArrayList<>();
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Answer answer = new Answer(rs.getString("answer_text"), rs.getBoolean("is_correct"));
+                answer.setId(rs.getInt("answer_id"));
+                answer.setQuestionId(rs.getInt("question_id"));
+
+                list.add(answer);
+            }
+
+        } catch (SQLException e) {
+            MyLogger.error(e.getMessage());
+        }
+        return list;
     }
 
     @Override

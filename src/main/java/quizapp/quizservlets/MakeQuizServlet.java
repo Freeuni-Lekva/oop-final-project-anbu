@@ -55,9 +55,20 @@ public class MakeQuizServlet extends HttpServlet {
                 default:
                     MyLogger.error("Unknown question type");
             }
+            if(quiz.getQuestions().get(questionIndex).getAnswerList().size() == 0){
+                request.setAttribute("error_message","error occurred while making quiz");
+                request.getRequestDispatcher(JSP.ERROR_PAGE).forward(request, response);
+                return;
+            }
             questionIndex++;
         }
+        if(quiz.getQuestions().size() == 0) {
+            request.setAttribute("error_message","error occurred while making quiz");
+            request.getRequestDispatcher(JSP.ERROR_PAGE).forward(request, response);
+            return;
+        }
         QuizDAO quizDAO = new QuizDAO();
+
         quizDAO.save(quiz);
 
         request.getRequestDispatcher(JSP.QUIZ_WELCOME_PAGE + "?quizId=" + quiz.getQuizId()).forward(request, response);

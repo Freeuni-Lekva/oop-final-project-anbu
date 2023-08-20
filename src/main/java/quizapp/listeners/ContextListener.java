@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebListener;
 import quizapp.managers.ChallengeManager;
 import quizapp.managers.FriendManager;
 import quizapp.managers.NoteManager;
+import quizapp.managers.HistoryManager;
 import quizapp.models.dao.QuizDAO;
 import quizapp.models.dao.UserDAO;
 import quizapp.settings.Services;

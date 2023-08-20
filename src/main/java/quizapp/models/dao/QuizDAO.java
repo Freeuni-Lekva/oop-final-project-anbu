@@ -60,7 +60,7 @@ public class QuizDAO implements DAO<Quiz> {
             }
 
         } catch (SQLException e) {
-            MyLogger.error("Error occurred while connecting to database: UserDAO::getAll");
+            MyLogger.error(e.getMessage());
         } catch (Exception e) {
             MyLogger.error(e.getMessage(), e);
         }
@@ -83,7 +83,7 @@ public class QuizDAO implements DAO<Quiz> {
             }
 
         } catch (SQLException e) {
-            MyLogger.error("Error occurred while connecting to database: UserDAO::getAll");
+            MyLogger.error(e.getMessage());
         } catch (Exception e) {
             MyLogger.error(e.getMessage(), e);
         }
@@ -167,6 +167,19 @@ public class QuizDAO implements DAO<Quiz> {
         return quizzes;
     }
 
+    public void incrementTimesTaken(Quiz quiz) {
+        String query = "UPDATE quizzes SET times_taken = times_taken + 1 WHERE quiz_id = ?";
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, quiz.getQuizId());
+            ps.executeUpdate();
+            quiz.setTimesTaken(quiz.getTimesTaken()+1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean update(Quiz quiz) {
         throw new UnsupportedOperationException("This method is not implemented.");
@@ -174,6 +187,20 @@ public class QuizDAO implements DAO<Quiz> {
 
     @Override
     public boolean delete(Quiz quiz) {
-        throw new UnsupportedOperationException("This method is not implemented.");
+        for( Question q : quiz.getQuestions()){
+            questionDAO.delete(q);
+        }
+
+        String query = "DELETE FROM quizzes WHERE quiz_id = ?";
+
+        try (Connection conn = _source.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, quiz.getQuizId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return  true;
     }
 }

@@ -1,4 +1,4 @@
-package quizapp;
+package quizapp.history;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import quizapp.managers.HistoryManager;
 import quizapp.models.domain.User;
+import quizapp.settings.JSP;
 import quizapp.settings.Services;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class HistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("history.jsp").forward(req, resp);
+        req.getRequestDispatcher(JSP.HISTORY).forward(req, resp);
     }
 
     @Override
