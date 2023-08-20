@@ -8,15 +8,16 @@
 <%@ page import="quizapp.settings.Endpoints" %>
 <%@ page import="quizapp.settings.JSP" %>
 <%
-    int quizId = Integer.valueOf(request.getParameter("quizId"));
+    Integer quizId = Integer.valueOf(request.getParameter("quizId"));
+    String username = ((User)  request.getSession().getAttribute("user")).getUsername();
     QuizDAO quizDAO = new QuizDAO();
     UserDAO userDAO = new UserDAO();
     Quiz quiz = quizDAO.get(quizId).orElse(null);
     request.getSession().setAttribute("quiz",quiz);
     request.getSession().setAttribute("takingQuiz", false);
     if (quiz == null) {
-        request.setAttribute("message", "The requested resource was not found.");
-        request.getRequestDispatcher("<%= JSP.ERROR_PAGE%>").forward(request, response);
+        request.setAttribute("error_message","error occurred while getting quiz");
+        request.getRequestDispatcher(JSP.ERROR_PAGE).forward(request, response);
         return;
     }
     User authorUser = userDAO.get(quiz.getCreatorId()).orElse(null);
@@ -128,6 +129,27 @@
     tr:nth-child(even) {
         background-color: #f2f2f2;
     }
+    .single-line-container {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    input[type="text"]{
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 300px;
+    }
+
+    input[type="text"]:focus{
+        border-color: #3e73b3;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+    }
+
+    input[type="text"]:hover{
+        border-color: #2a43b0;
+    }
     </style>
 </head>
 <body>
@@ -200,6 +222,16 @@
                 </tbody>
             </table>
           </div>
+    </div>
+    <div class="divider"></div>
+    <div class="single-line-container">
+        <form method = "post" action = "<%= Endpoints.MESSAGE%>">
+            <button action="post" name>challenge friend</button>
+            <input type="text" name="receiver">
+            <input type="hidden" name="challenged_quiz_id" value=<%= quizId%>>
+            <input type="hidden" name="sender" value=<%= username%>>
+            <input type="hidden" name="messageType" value = "challenge">
+        </form>
     </div>
 </body>
 </html>

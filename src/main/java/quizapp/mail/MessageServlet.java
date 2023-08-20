@@ -10,8 +10,10 @@ import quizapp.managers.FriendManager;
 import quizapp.managers.NoteManager;
 import quizapp.models.domain.message.MessageType;
 import quizapp.settings.Endpoints;
+import quizapp.settings.JSP;
 
 import java.io.IOException;
+import java.util.List;
 
 /* messageServlet, accepts only POST request, handles internal mail messages (Challenge, Note, Friend Request) */
 @WebServlet(name = "messageServlet", value = Endpoints.MESSAGE)
@@ -44,11 +46,20 @@ public class MessageServlet extends HttpServlet {
             case CHALLENGE: {
                 ChallengeManager challengeManager = (ChallengeManager) req.getServletContext().getAttribute("challengeManager");
                 int quiz_id = Integer.parseInt(req.getParameter("challenged_quiz_id"));
+                FriendManager friendManager = (FriendManager) req.getServletContext().getAttribute("friendManager");
+                List<String> friendList = friendManager.getFriends(sender);
+                if(sender.equals(receiver) || !friendList.contains(receiver)){
+                    req.setAttribute("error_message","error occurred while sending challenge");
+                    req.getRequestDispatcher(JSP.ERROR_PAGE).forward(req, resp);
+                    break;
+                }
                 challengeManager.sendChallenge(sender, receiver, quiz_id);
+                req.getRequestDispatcher(JSP.QUIZ_WELCOME_PAGE + "?quizId="+quiz_id).forward(req, resp);
                 break;
             }
 
-            default: throw new RuntimeException("illegal message type");
+            default:
+                throw new RuntimeException("illegal message type");
         }
 
     }

@@ -5,7 +5,8 @@
     <title>Error Page</title>
 </head>
 <body>
-    <h1>An error occurred.</h1>
+    <h1>Unexpected Error</h1>
+    <p> <%= (String) request.getAttribute("error_message") %></p>
     <a href="<%=Endpoints.HOMEPAGE%>">go back to homepage</a>
     <style>
         body{
