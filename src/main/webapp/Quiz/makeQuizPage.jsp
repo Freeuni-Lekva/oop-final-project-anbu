@@ -1,3 +1,4 @@
+<%@ page import="quizapp.settings.Endpoints" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +6,7 @@
 </head>
 <body>
     <h1>Create Quiz</h1>
-    <form class = flash-card  method = "post" action = "/secured/makeQuiz"  onsubmit="return validateFillInTheBlanks()">
+    <form class = flash-card  method = "post" action = "<%= Endpoints.MAKE_QUIZ%>"  onsubmit="return validateFillInTheBlanks()">
         <h2>Quiz:</h2>
        <div id = "quiz-info">
             <div class = "info-input">
@@ -462,7 +463,6 @@
         border: 1px solid #3e73b3;
         padding: 10px;
         margin: 10px;
-        cursor: pointer;
     }
 
     .input-info {

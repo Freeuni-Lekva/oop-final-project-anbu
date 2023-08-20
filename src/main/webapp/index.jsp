@@ -1,5 +1,2 @@
-<html>
-<body>
-    <% response.sendRedirect("/auth/login"); %>
-</body>
-</html>
+<%@ page import="quizapp.settings.Endpoints" %>
+<% response.sendRedirect(Endpoints.LOGIN); %>

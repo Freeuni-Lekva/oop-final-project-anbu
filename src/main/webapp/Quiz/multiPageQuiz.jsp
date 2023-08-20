@@ -3,6 +3,7 @@
 <%@ page import="quizapp.models.questions.QuestionType" %>
 <%@ page import="quizapp.models.dao.QuizDAO" %>
 <%@ page import="quizapp.models.questions.Quiz" %>
+<%@ page import="quizapp.settings.Endpoints" %>
 <%
     boolean takingQuiz = (boolean) request.getSession().getAttribute("takingQuiz");
     if(!takingQuiz){return;}
@@ -175,7 +176,7 @@
     <h1 class = "centered"><%= quiz.getQuizName()%></h1>
     <div class="centered">
         <div class = "flash-card multi-page-container">
-            <form method = "post" action = "/secured/gradeQuizServlet" id = "quizForm">
+            <form method = "post" action = "<%= Endpoints.GRADE_QUIZ%>"  id = "quizForm">
                 <input type = "hidden" name = "questionIndex" value = <%= questionIndex%> />
                 <%= questions.get(questionIndex).renderQuestionHTML(questionIndex+1) %>
                 <div class = "divider" >

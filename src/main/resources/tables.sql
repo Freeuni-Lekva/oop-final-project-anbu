@@ -32,7 +32,7 @@ CREATE TABLE quizzes (
   single_page_questions BOOLEAN DEFAULT FALSE,
   immediate_correction BOOLEAN DEFAULT FALSE,
   time_limit_minutes INT default 60,
-  times_taken INT NOT NULL,
+  times_taken INT default 0,
   FOREIGN KEY (creator_id) REFERENCES users(user_id)
 );
 
