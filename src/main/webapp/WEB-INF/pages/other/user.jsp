@@ -2,6 +2,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="quizapp.models.domain.User" %>
 <%@ page import="quizapp.settings.Endpoints" %>
+<%@ page import="quizapp.models.dao.QuizDAO" %>
+<%@ page import="quizapp.settings.Services" %>
+<%@ page import="quizapp.models.questions.Quiz" %>
+<%@ page import="quizapp.models.dao.UserDAO" %>
+<%@ page import="java.util.Optional" %>
+<%@ page import="quizapp.managers.HistoryManager" %>
+<%@ page import="quizapp.models.domain.QuizHistory" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,6 +23,15 @@
     boolean areFriends = friendManager.areFriends(current_username, username);
     boolean friendRequestIsSent = friendManager.friendRequestIsSent(current_username, username);
     boolean friendRequestIsReceived = friendManager.friendRequestIsSent(username, current_username);
+
+    UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(Services.USER_DAO);
+    User search_user = userDao.getByUsername(username).get();
+
+    QuizDAO quizDao = (QuizDAO) request.getServletContext().getAttribute(Services.QUIZ_DAO);
+    List<Quiz> quizzes_created = quizDao.getAllByCreator(search_user.getId());
+
+    HistoryManager historyManager = (HistoryManager) request.getServletContext().getAttribute(Services.HISTORY_MANAGER);
+    List<QuizHistory> quizzes_taken = historyManager.getUserActivity(username);
 %>
 
 <html>
@@ -103,6 +119,30 @@
 
             <input id="note-input" type="text" placeholder="Note Message"><button id="send-note-btn">Send Message</button>
         <% } %>
+
+        <h2>Quizzes created:</h2>
+        <span class = "dropdown-icon">&#9650;</span>
+        <div class = "sub-content" style="display: block;">
+            <ul>
+                <% for (Quiz quiz : quizzes_created) { %>
+                <li>
+                    <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
+                </li>
+                <% }; %>
+            </ul>
+        </div>
+
+        <h2>Quizzes taken:</h2>
+        <span class = "dropdown-icon" >&#9650;</span>
+        <div class = "sub-content" style="display: block;">
+            <ul>
+                <% for (QuizHistory activity : quizzes_taken) { %>
+                <li>
+                    <p>Completed <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=activity.get_quiz_id()%>" style="text-decoration: underline"><%=activity.get_quiz_name()%></a> with the score of <%=activity.getScore()%></p>
+                </li>
+                <% }; %>
+            </ul>
+        </div>
     </div>
     <div class="divider"></div>
     <form action="<%=Endpoints.HOMEPAGE%>" method="get">
