@@ -107,7 +107,7 @@
                     <ul>
                         <% for (ChallengeRequest challengeRequest : challengeRequests) { %>
                         <li>
-                            <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=challengeRequest.getQuizId()%>"><%=challengeRequest.getSender()%>&#39;s challenge on quiz with id: <%=challengeRequest.getQuizId()%></a>
+                            <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=challengeRequest.getQuizId()%>"><%=challengeRequest.getSender()%>&#39;s challenge on quiz with id: <%=challengeRequest.getQuizId()%> (score: <%=challengeRequest.getScore()%>)</a>
                         </li>
                         <% }; %>
                     </ul>
