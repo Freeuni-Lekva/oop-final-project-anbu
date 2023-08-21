@@ -40,7 +40,7 @@ public class ChallengeManager {
 
     /* retrieves challenge requests sent to a particular user identified with given [username] */
     public List<ChallengeRequest> getChallengeRequests(String username) {
-        String sql = "select * from challenge_requests where receiver = ? order by request_date";
+        String sql = "select * from challenge_requests cr join quiz_history qh on qh.quiz_id = cr.quiz_id where cr.receiver = ? order by request_date";
 
         List<ChallengeRequest> challenges = new ArrayList<>();
 
@@ -56,8 +56,9 @@ public class ChallengeManager {
                 String sender = rs.getString("sender");
                 String receiver = username;
                 int quiz_id = rs.getInt("quiz_id");
+                int score = rs.getInt("score");
 
-                ChallengeRequest chr = new ChallengeRequest(sender, receiver, quiz_id);
+                ChallengeRequest chr = new ChallengeRequest(sender, receiver, quiz_id, score);
 
                 challenges.add(chr);
             }
