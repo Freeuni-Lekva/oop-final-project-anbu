@@ -16,7 +16,7 @@
 <body>
     <% for (QuizHistory entry : entries) { %>
         <p>
-            User <a href="/secured/user?username=<%=entry.getUser()%>"><%=entry.getUser()%></a> completed quiz <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=entry.get_quiz_id()%>">#<%=entry.get_quiz_id()%></a> in <%=entry.get_completion_time()%> seconds.
+            User <a href="/secured/user?username=<%=entry.getUsername()%>"><%=entry.getUsername()%></a> completed quiz <a href="/Quiz/quizWelcomePage.jsp?quizId=<%=entry.get_quiz_id()%>"><%=entry.get_quiz_name()%></a> in <%=entry.get_completion_time()%> seconds with the score of <%= entry.getScore() %>.
         </p>
     <% } %>
 </body>
