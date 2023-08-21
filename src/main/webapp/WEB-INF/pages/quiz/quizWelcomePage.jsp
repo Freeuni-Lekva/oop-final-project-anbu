@@ -157,7 +157,7 @@
     <div class = "flash-card welcome-page-container">
         <div class = "left-div">
             <h1><%= quiz.getQuizName()%></h1>
-            <p><b>Author:</b> <%= authorUser.getUsername()%></p>
+            <p><b>Author:</b> <a href="/secured/user?username=<%= authorUser.getUsername() %>"><%= authorUser.getUsername()%></a></p>
             <p><b>Date:</b> <%= quiz.getFormattedCreationDate()%></p>
             <p><b>About:</b> <%= quiz.getDescription()%></p>
              <p><b>Number Of Questions:</b> <%= quiz.getQuestions().size()%></p>
