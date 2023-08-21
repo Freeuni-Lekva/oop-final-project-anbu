@@ -11,6 +11,10 @@
 <%@ page import="java.util.stream.Collectors" %>
 <%@ page import="quizapp.models.dao.UserDAO" %>
 <%@ page import="quizapp.settings.Endpoints" %>
+<%@ page import="quizapp.models.domain.QuizActivity" %>
+<%@ page import="quizapp.managers.HistoryManager" %>
+<%@ page import="quizapp.settings.Services" %>
+<%@ page import="quizapp.models.domain.QuizHistory" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -61,6 +65,11 @@
         List<Quiz> recent_own_quizzes = own_quizzes.stream().limit(5).collect(Collectors.toList());
 
         List<Quiz> popular_quizzes = quizDao.getPopularQuizzes();
+
+        HistoryManager historyManager = (HistoryManager) request.getServletContext().getAttribute(Services.HISTORY_MANAGER);
+        List<QuizHistory> friendActivities = historyManager.getFriendActivity(username);
+
+        List<QuizActivity> friendCreatedQuizzes = quizDao.getAllByFriends(username);
     %>
 
 
@@ -200,13 +209,27 @@
             </div>
 
             <div class = "main-content flash-card">
-                <h2>Friend Activities:</h2>
+                <h2>Quizzes taken by friends:</h2>
                  <span class = "dropdown-icon" >&#9650;</span>
                  <div class = "sub-content" style="display: block;">
                     <ul>
-                        <% for (Quiz quiz : recent_quizzes) { %>
+                        <% for (QuizHistory activity : friendActivities) { %>
                         <li>
-                            <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
+                            <p><%=activity.getUsername()%> completed <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=activity.get_quiz_id()%>" style="text-decoration: underline"><%=activity.get_quiz_name()%></a> with the score of <%=activity.getScore()%></p>
+                        </li>
+                        <% }; %>
+                    </ul>
+                </div>
+            </div>
+
+            <div class = "main-content flash-card">
+                <h2>Quizzes created by friends:</h2>
+                <span class = "dropdown-icon" >&#9650;</span>
+                <div class = "sub-content" style="display: block;">
+                    <ul>
+                        <% for (QuizActivity activity : friendCreatedQuizzes) { %>
+                        <li>
+                            <p><%=activity.getCreator()%> created <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=activity.get_quiz_id()%>" style="text-decoration: underline"><%=activity.get_quiz_name()%></a> on <%=activity.get_creation_date()%></p>
                         </li>
                         <% }; %>
                     </ul>
