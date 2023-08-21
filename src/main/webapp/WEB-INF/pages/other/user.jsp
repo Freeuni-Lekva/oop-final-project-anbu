@@ -120,28 +120,31 @@
             <input id="note-input" type="text" placeholder="Note Message"><button id="send-note-btn">Send Message</button>
         <% } %>
 
-        <h2>Quizzes created:</h2>
-        <span class = "dropdown-icon">&#9650;</span>
-        <div class = "sub-content" style="display: block;">
-            <ul>
-                <% for (Quiz quiz : quizzes_created) { %>
-                <li>
-                    <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
-                </li>
-                <% }; %>
-            </ul>
+        <div class = "main-content">
+            <h2>Quizzes created:</h2>
+            <span class = "dropdown-icon">&#9650;</span>
+            <div class = "sub-content" style="display: block;">
+                <ul>
+                    <% for (Quiz quiz : quizzes_created) { %>
+                    <li>
+                        <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=quiz.getQuizId()%>"><%=quiz.getQuizName()%></a>
+                    </li>
+                    <% }; %>
+                </ul>
+            </div>
         </div>
-
-        <h2>Quizzes taken:</h2>
-        <span class = "dropdown-icon" >&#9650;</span>
-        <div class = "sub-content" style="display: block;">
-            <ul>
-                <% for (QuizHistory activity : quizzes_taken) { %>
-                <li>
-                    <p>Completed <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=activity.get_quiz_id()%>" style="text-decoration: underline"><%=activity.get_quiz_name()%></a> with the score of <%=activity.getScore()%></p>
-                </li>
-                <% }; %>
-            </ul>
+        <div class = "main-content">
+            <h2>Quizzes taken:</h2>
+            <span class = "dropdown-icon" >&#9650;</span>
+            <div class = "sub-content" style="display: block;">
+                <ul>
+                    <% for (QuizHistory activity : quizzes_taken) { %>
+                    <li>
+                        <p>Completed <a href="<%=Endpoints.TAKE_QUIZ%>?quizId=<%=activity.get_quiz_id()%>" style="text-decoration: underline"><%=activity.get_quiz_name()%></a> with the score of <%=activity.getScore()%></p>
+                    </li>
+                    <% }; %>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="divider"></div>
@@ -149,6 +152,24 @@
         <button type="submit">go back to homepage</button>
     </form>
 
+    <script>
+        var spans = document.querySelectorAll('.dropdown-icon');
+
+        for (var i = 0; i < spans.length; i++) {
+            spans[i].addEventListener('click', function(event) {
+              toggleSubelements(event.currentTarget);
+              event.stopPropagation();
+            });
+        }
+
+        function toggleSubelements(triangle) {
+             const item = triangle.closest('.main-content');
+             const subElements = item.querySelector('.sub-content');
+             const dropdownIcon = item.querySelector('.dropdown-icon');
+             dropdownIcon.innerHTML = subElements.style.display === 'block' ?  '&#9776;' : '&#9650;';
+             subElements.style.display = subElements.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
      <style>
         body{
             font-family: Sans-Serif;
@@ -194,6 +215,29 @@
         .divider {
            margin-top: 20px;
            padding: 10px;
+        }
+        .main-content {
+            position: relative;
+            border: 1px solid #3e73b3;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .sub-content {
+            display: block;
+            margin-left: 20px;
+        }
+
+        .dropdown-icon {
+            font-size: 20px;
+            color: #3e73b3;
+            cursor: pointer;
+            padding: 3px;
+            position: absolute;
+              top: 0;
+              left: 0;
+              padding: 5px;
+              cursor: pointer;
         }
      </style>
 </body>

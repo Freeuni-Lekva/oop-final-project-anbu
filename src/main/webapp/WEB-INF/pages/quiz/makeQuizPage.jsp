@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Create Quiz</h1>
-    <form class = flash-card  method = "post" action = "<%= Endpoints.MAKE_QUIZ%>"  onsubmit="return validateFillInTheBlanks()">
+    <form class = flash-card  method = "post" action = "<%= Endpoints.MAKE_QUIZ%>"  onsubmit="return validateForm()">
         <h2>Quiz:</h2>
        <div id = "quiz-info">
             <div class = "info-input">
@@ -63,10 +63,10 @@
         <button type="submit">Create Quiz</button>
     </form>
     <script>
+
     var questionIndex = 0;
     const questionTypeDropdown = document.getElementById('questionTypeDropDown');
     const questionsDiv = document.getElementById('questionsDiv');
-
     function addQuestionForm(){
         const questionType = questionTypeDropdown.value;
 
@@ -196,6 +196,16 @@
             }
          }
         return true;
+    }
+
+    function validateForm(){
+        var questions = document.querySelectorAll(".question");
+        if(questions.length === 0){
+            alert("add at least 1 question");
+            return false;
+        }
+
+        return validateFillInTheBlanks()
     }
 
     function generateMultipleChoice(){

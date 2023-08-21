@@ -92,7 +92,7 @@ public class HistoryManager {
                 int completion_time_seconds = rs.getInt("completion_time_seconds");
                 String quiz_name = rs.getString("quiz_name");
 
-                QuizHistory quizActivity = new QuizHistory(user, score, quiz_id, completion_time_seconds, quiz_name);
+                QuizHistory quizActivity = new QuizHistory(user, quiz_id,  score, completion_time_seconds, quiz_name);
 
                 activities.add(quizActivity);
             }
@@ -123,7 +123,7 @@ public class HistoryManager {
                 int completion_time_seconds = rs.getInt("completion_time_seconds");
                 String quiz_name = rs.getString("quiz_name");
 
-                QuizHistory quizActivity = new QuizHistory(user, score, quiz_id, completion_time_seconds, quiz_name);
+                QuizHistory quizActivity = new QuizHistory(user,  quiz_id,score, completion_time_seconds, quiz_name);
 
                 activities.add(quizActivity);
             }

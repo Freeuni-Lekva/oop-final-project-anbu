@@ -10,8 +10,8 @@ public class DatabaseConnectionSource {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "quizDB";
-    private static final String DB_USER = "root";
-    private static final String DB_PASS = "sql25799750";
+    private static final String DB_USER = "_______";
+    private static final String DB_PASS = "_______";
 
     private static DatabaseConnectionSource instance;
 

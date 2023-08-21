@@ -40,7 +40,7 @@ public class ChallengeManager {
 
     /* retrieves challenge requests sent to a particular user identified with given [username] */
     public List<ChallengeRequest> getChallengeRequests(String username) {
-        String sql = "select * from challenge_requests cr join quiz_history qh on qh.quiz_id = cr.quiz_id where cr.receiver = ? order by request_date";
+        String sql = "select Max(qh.score) as score, qh.username as sender, Max(qh.quiz_id) as quiz_id from challenge_requests cr  join quiz_history qh on qh.quiz_id = cr.quiz_id where cr.receiver =  ?  and cr.sender = qh.username group by qh.username";
 
         List<ChallengeRequest> challenges = new ArrayList<>();
 
