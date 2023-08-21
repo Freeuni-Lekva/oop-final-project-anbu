@@ -1,5 +1,7 @@
 package quizapp.models.dao;
 
+import quizapp.managers.FriendManager;
+import quizapp.models.domain.QuizActivity;
 import quizapp.models.questions.Question;
 import quizapp.models.questions.Quiz;
 import utils.DatabaseConnectionSource;
@@ -65,6 +67,47 @@ public class QuizDAO implements DAO<Quiz> {
             MyLogger.error(e.getMessage(), e);
         }
         return list;
+    }
+
+    /* returns quizzes created by friends of user identified with [username] */
+    public List<QuizActivity> getAllByFriends(String username) {
+        StringBuilder queryBuidler = new StringBuilder("select * from quizzes q join users u on q.creator_id = u.user_id where");
+
+        FriendManager friendManager = new FriendManager();
+
+        List<String> friends = friendManager.getFriends(username);
+
+        for (String friend : friends) {
+                queryBuidler.append(String.format(" (username = '%s') or", friend));
+        }
+
+        queryBuidler.append(" (1 = 0) order by creation_date desc;");
+
+        String sql = queryBuidler.toString();
+
+        List<QuizActivity> activities = new ArrayList<>();
+
+        try (Connection conn = _source.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String creator = rs.getString("username");
+                int quiz_id = rs.getInt("quiz_id");
+                String quiz_name = rs.getString("quiz_name");
+                Date creation_date =rs.getDate("creation_date");
+
+                QuizActivity activity = new QuizActivity(creator, quiz_id, quiz_name, creation_date);
+
+                activities.add(activity);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return activities;
     }
 
     public List<Quiz> getAllByCreator(int creatorId) {
