@@ -22,7 +22,7 @@ public class PictureResponse extends Question {
         htmlBuilder.append("<img src=\"").append(pictureUrl).append("\" alt=\"Image\">");
         htmlBuilder.append("</div>");
         htmlBuilder.append("<div class = \"answer-input\">");
-        htmlBuilder.append("<input type=\"text\" name=\"").append(questionIndex).append("\" id = \"").append(questionIndex).append("\">");
+        htmlBuilder.append("<input type=\"text\" name=\"").append(questionId).append("\" id = \"").append(questionIndex).append("\">");
         htmlBuilder.append("</div>");
         return htmlBuilder.toString();
     }
